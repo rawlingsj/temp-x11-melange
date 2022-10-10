@@ -1,0 +1,73 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxml2/APKBUILD
+package:
+  name: libxml2
+  version: 2.10.2
+  epoch: 0
+  description: XML parsing library, version 2
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+        - '*'
+      attestation: TODO
+      license: MIT
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage3
+      - https://packages.wolfi.dev/os
+      - /work/packages
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ca-certificates-bundle
+      - build-base
+      - automake
+      - autoconf
+      - zlib-dev
+      - xz-dev
+      - python3
+      - python3-dev
+      - #python3  should we include python3 for bootstrap and configure options --with-python=/usr/bin/python3
+#      - libxml2-utils-dev
+pipeline:
+  - uses: fetch
+    with:
+      expected-sha256: d240abe6da9c65cb1900dd9bf3a3501ccf88b3c2a1cb98317d03f272dda5b265
+      uri: https://download.gnome.org/sources/libxml2/2.10/libxml2-${{package.version}}.tar.xz
+  - uses: autoconf/configure
+    with:
+      opts: |
+        PYTHON=/usr/bin/python3 \
+        --with-lzma \
+        --with-zlib
+  - uses: autoconf/make
+  - uses: autoconf/make-install
+  - uses: strip
+subpackages:
+#  - name: libxml2-dbg
+#    pipeline:
+#      - uses: split/FIXME
+#    description: libxml2 FIXME
+  - name: libxml2-doc
+    pipeline:
+      - uses: split/manpages
+    description: libxml2 manpages
+  - name: libxml2-dev
+    pipeline:
+      - uses: split/dev
+    dependencies:
+      runtime:
+        - libxml2
+        - zlib-dev
+        - xz-dev
+#        - libxml2-utils
+    description: libxml2 dev
+#  - name: libxml2-utils todo do we need to add this back in?
+#    pipeline:
+#      - runs: |
+#          ls -al "${{targets.destdir}}"
+#    description: libxml2 utils
+
