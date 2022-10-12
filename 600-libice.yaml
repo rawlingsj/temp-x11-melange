@@ -50,7 +50,7 @@ subpackages:
       runtime:
         - libice
     description: libice dev
-  - name: libice-doc
-    pipeline:
-      - uses: split/manpages
-    description: libice manpages
+  # - name: libice-doc
+  #   pipeline:
+  #     - uses: split/manpages
+  #   description: libice manpages

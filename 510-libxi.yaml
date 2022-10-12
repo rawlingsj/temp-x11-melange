@@ -47,6 +47,7 @@ subpackages:
     dependencies:
       runtime:
         - libxi
+        - libxfixes-dev
     description: libxi dev
   - name: libxi-doc
     pipeline:

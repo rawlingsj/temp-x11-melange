@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-FROM=675
+FROM=${1:-000}    
 FILES="*.yaml"
 for f in $FILES
 do
@@ -13,7 +13,3 @@ do
     docker run --platform linux/arm64 --privileged -v "$PWD":/work cgr.dev/chainguard/melange build /work/$f --arch amd64 --keyring-append local-melange.rsa.pub --signing-key local-melange.rsa
   fi
 done
-
-
-
-
