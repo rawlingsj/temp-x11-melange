@@ -26,10 +26,8 @@ environment:
       - build-base
       - automake
       - autoconf
-      - pkgconfig
+      # - pkgconfig
       - texinfo
-      - autoconf
-      - automake
       - libtool
 pipeline:
   - uses: fetch
