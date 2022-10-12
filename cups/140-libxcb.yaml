@@ -1,0 +1,61 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxcb/APKBUILD
+package:
+    name: libxcb
+    version: "1.15"
+    description: X11 client-side library
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - libxau-dev
+            - xcb-proto
+            - libpthread-stubs
+            - libxdmcp-dev
+            - libxslt
+            - python3
+            - libxau-dev
+            - xcb-proto-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: cc38744f817cf6814c847e2df37fcb8997357d72fa4bcbc228ae0fe47219a059
+        uri: https://xorg.freedesktop.org/archive/individual/lib/libxcb-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libxcb-static
+      pipeline:
+        - uses: split/FIXME
+      description: libxcb FIXME
+    - name: libxcb-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libxcb
+            - libxau-dev
+            - xcb-proto
+      description: libxcb dev
+    - name: libxcb-doc
+      pipeline:
+        - uses: split/manpages
+      description: libxcb manpages

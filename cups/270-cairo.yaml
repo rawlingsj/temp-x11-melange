@@ -1,0 +1,90 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/cairo/APKBUILD
+package:
+    name: cairo
+    version: 1.17.6
+    description: A vector graphics library
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.0-or-later MPL-1.1
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - cairo-tools
+            - fontconfig-dev
+            - freetype-dev
+            - libxext-dev
+            - libxrender-dev
+            - pixman-dev
+            - xcb-util-dev
+            - expat-dev
+            - glib-dev
+            - gtk-doc
+            - libpng-dev
+            - meson
+            - zlib-dev
+            - cairo-tools-dev
+            - fontconfig-dev
+            - freetype-dev
+            - libxext-dev
+            - libxrender-dev
+            - pixman-dev
+            - xcb-util-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 90496d135c9ef7612c98f8ee358390cdec0825534573778a896ea021155599d2
+        uri: https://gitlab.freedesktop.org/cairo/cairo/-/archive/${{package.version}}/cairo-${{package.version}}.tar.bz2
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: cairo-dbg
+      pipeline:
+        - uses: split/FIXME
+      description: cairo FIXME
+    - name: cairo-static
+      pipeline:
+        - uses: split/FIXME
+      description: cairo FIXME
+    - name: cairo-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - cairo
+            - cairo-tools
+            - fontconfig-dev
+            - freetype-dev
+            - libxext-dev
+            - libxrender-dev
+            - pixman-dev
+            - xcb-util-dev
+      description: cairo dev
+    - name: cairo-doc
+      pipeline:
+        - uses: split/manpages
+      description: cairo manpages
+    - name: cairo-gobject
+      pipeline:
+        - uses: split/FIXME
+      description: cairo FIXME
+    - name: cairo-tools
+      pipeline:
+        - uses: split/FIXME
+      description: cairo FIXME

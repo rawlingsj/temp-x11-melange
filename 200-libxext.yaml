@@ -1,14 +1,14 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxext/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
+  name: libxext
+  version: 1.3.4
   epoch: 0
-  description: X11 authorisation library
+  description: X11 miscellaneous extensions library
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: MIT
 environment:
@@ -26,26 +26,30 @@ environment:
       - build-base
       - automake
       - autoconf
+      - libxau-dev
+      - libx11-dev
       - xorgproto
       - util-macros
+      - xmlto
+      - libxau-dev
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
+      expected-sha256: 59ad6fcce98deaecc14d39a672cf218ca37aba617c9a0f691cac3bcd28edf82b
+      uri: https://www.x.org/releases/individual/lib/libXext-${{package.version}}.tar.bz2
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libxau-dev
+  - name: libxext-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - libxext
+        - libxau-dev
+    description: libxext dev
+  - name: libxext-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: libxext manpages

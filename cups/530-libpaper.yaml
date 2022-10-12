@@ -1,0 +1,50 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libpaper/APKBUILD
+package:
+    name: libpaper
+    version: 1.1.28
+    description: Library for handling paper characteristics
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-2.0-only
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - automake
+            - autoconf
+            - libtool
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: c8bb946ec93d3c2c72bbb1d7257e90172a22a44a07a07fb6b802a5bb2c95fddc
+        uri: https://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libpaper-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libpaper
+      description: libpaper dev
+    - name: libpaper-doc
+      pipeline:
+        - uses: split/manpages
+      description: libpaper manpages

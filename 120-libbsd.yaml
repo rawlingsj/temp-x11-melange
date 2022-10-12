@@ -29,6 +29,7 @@ environment:
 #      - bsd-compat-headers
       - linux-headers
       - libmd-dev
+      - glibc-dev
 #      - libbsd-dev
 pipeline:
   - uses: fetch
@@ -48,10 +49,11 @@ subpackages:
       - uses: split/dev
     dependencies:
       runtime:
-        - libbsd
+#        - libbsd
 #        - bsd-compat-headers
-        - linux-headers
+#        - linux-headers
         - libmd-dev
+        - libbsd=${{package.version}}-${{package.epoch}}
     description: libbsd dev
   - name: libbsd-doc
     pipeline:

@@ -1,16 +1,16 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/skalibs/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
+  name: skalibs
+  version: 2.12.0.0
   epoch: 0
-  description: X11 authorisation library
+  description: Set of general-purpose C programming libraries for skarnet.org software.
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
-      license: MIT
+      license: ISC
 environment:
   contents:
     repositories:
@@ -26,26 +26,27 @@ environment:
       - build-base
       - automake
       - autoconf
-      - xorgproto
-      - util-macros
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
+      expected-sha256: e6d724b4c628f093df75c98f1274d8bd6c0ecdb09cc6816d3268bacb58647f30
+      uri: https://skarnet.org/software/skalibs/skalibs-${{package.version}}.tar.gz
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libxau-dev
+  # - name: skalibs-static
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: skalibs FIXME
+  - name: skalibs-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - skalibs
+    description: skalibs dev
+  - name: skalibs-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: skalibs manpages

@@ -1,0 +1,67 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/gnutls/APKBUILD
+package:
+    name: gnutls
+    version: 3.7.8
+    description: TLS protocol implementation
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.1-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - nettle-dev
+            - zlib-dev
+            - libkcapi-dev
+            - libtasn1-dev
+            - linux-headers
+            - p11-kit-dev
+            - libunistring-dev
+            - texinfo
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: c58ad39af0670efe6a8aee5e3a8b2331a1200418b64b7c51977fb396d4617114
+        uri: https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: gnutls-dbg
+      pipeline:
+        - uses: split/FIXME
+      description: gnutls FIXME
+    - name: gnutls-doc
+      pipeline:
+        - uses: split/manpages
+      description: gnutls manpages
+    - name: gnutls-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - gnutls
+      description: gnutls dev
+    - name: gnutls-utils
+      pipeline:
+        - uses: split/FIXME
+      description: gnutls FIXME
+    - name: gnutls-c++
+      pipeline:
+        - uses: split/FIXME
+      description: gnutls FIXME

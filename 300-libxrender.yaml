@@ -1,16 +1,15 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxrender/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
-  epoch: 0
-  description: X11 authorisation library
+  name: libxrender
+  version: 0.9.10
+  description: X Rendering Extension client library
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
-      license: MIT
+      license: custom
 environment:
   contents:
     repositories:
@@ -27,25 +26,25 @@ environment:
       - automake
       - autoconf
       - xorgproto
+      - libx11-dev
       - util-macros
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
+      expected-sha256: c06d5979f86e64cabbde57c223938db0b939dff49fdb5a793a1d3d0396650949
+      uri: https://www.x.org/releases/individual/lib/libXrender-${{package.version}}.tar.bz2
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libxau-dev
+  - name: libxrender-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - libxrender
+    description: libxrender dev
+  - name: libxrender-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: libxrender manpages

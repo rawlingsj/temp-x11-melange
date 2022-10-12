@@ -32,6 +32,7 @@ environment:
       - libxdmcp-dev
       - libxslt
       - python3
+#      - libmd-dev
 pipeline:
   - uses: fetch
     with:
@@ -58,6 +59,7 @@ subpackages:
         - libxcb
         - libxau-dev
         - xcb-proto
+        - libxdmcp-dev
     description: libxcb dev
   - name: libxcb-doc
     pipeline:

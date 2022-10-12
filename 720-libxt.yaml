@@ -1,16 +1,15 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxt/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
-  epoch: 0
-  description: X11 authorisation library
+  name: libxt
+  version: 1.2.1
+  description: X11 toolkit intrinsics library
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
-      license: MIT
+      license: custom
 environment:
   contents:
     repositories:
@@ -26,26 +25,29 @@ environment:
       - build-base
       - automake
       - autoconf
-      - xorgproto
+      - libsm-dev
+      - libice-dev
+      - libx11-dev
       - util-macros
+      - xorgproto
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
+      expected-sha256: 679cc08f1646dbd27f5e48ffe8dd49406102937109130caab02ca32c083a3d60
+      uri: https://www.x.org/releases/individual/lib/libXt-${{package.version}}.tar.bz2
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libxau-dev
+  - name: libxt-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - libxt
+        - libsm-dev
+    description: libxt dev
+  - name: libxt-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: libxt manpages

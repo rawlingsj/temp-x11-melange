@@ -1,0 +1,85 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/glib/APKBUILD
+package:
+    name: glib
+    version: 2.74.0
+    description: Common C routines used by Gtk+ and other libs
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.1-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - bzip2-dev
+            - docbook-xml
+            - docbook-xsl
+            - gettext-dev
+            - libxml2-utils
+            - libxslt
+            - python3
+            - pcre2-dev
+            - meson
+            - zlib-dev
+            - libffi-dev
+            - util-linux-dev
+            - bzip2-dev
+            - docbook-xml-dev
+            - docbook-xsl-dev
+            - gettext-dev
+            - libxml2-utils-dev
+            - libxslt-dev
+            - python3-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 3652c7f072d7b031a6b5edd623f77ebc5dcd2ae698598abcc89ff39ca75add30
+        uri: https://download.gnome.org/sources/glib/2.74/glib-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: glib-dbg
+      pipeline:
+        - uses: split/FIXME
+      description: glib FIXME
+    - name: glib-doc
+      pipeline:
+        - uses: split/manpages
+      description: glib manpages
+    - name: glib-static
+      pipeline:
+        - uses: split/FIXME
+      description: glib FIXME
+    - name: glib-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - glib
+            - bzip2-dev
+            - docbook-xml
+            - docbook-xsl
+            - gettext-dev
+            - libxml2-utils
+            - libxslt
+            - python3
+      description: glib dev
+    - name: glib-lang
+      pipeline:
+        - uses: split/FIXME
+      description: glib FIXME

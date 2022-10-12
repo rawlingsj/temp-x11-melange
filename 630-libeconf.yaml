@@ -1,14 +1,14 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libeconf/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
+  name: libeconf
+  version: 0.4.6
   epoch: 0
-  description: X11 authorisation library
+  description: Enhanced Config File Parser
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: MIT
 environment:
@@ -26,26 +26,24 @@ environment:
       - build-base
       - automake
       - autoconf
-      - xorgproto
-      - util-macros
+      - meson
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
-  - uses: autoconf/configure
-  - uses: autoconf/make
-  - uses: autoconf/make-install
+      expected-sha256: 2143c248a2d643392ae39faddba29c1aa9caf406cec7ef1ac5fd6dd7e8b43d65
+      uri: https://github.com/openSUSE/libeconf/archive/refs/tags/v${{package.version}}.tar.gz
+  - uses: meson/configure
+  - uses: meson/compile
+  - uses: meson/install
 subpackages:
-  - name: libxau-dev
+  - name: libeconf-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - libeconf
+    description: libeconf dev
+  - name: libeconf-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: libeconf manpages

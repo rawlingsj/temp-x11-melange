@@ -1,16 +1,16 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxau/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libxi/APKBUILD
 package:
-  name: libxau
-  version: 1.0.10
+  name: libxi
+  version: "1.8"
   epoch: 0
-  description: X11 authorisation library
+  description: X11 Input extension library
   target-architecture:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
-      license: MIT
+      license: MIT AND X11
 environment:
   contents:
     repositories:
@@ -27,25 +27,28 @@ environment:
       - automake
       - autoconf
       - xorgproto
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
       - util-macros
+      - xmlto
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a
-      uri: https://www.x.org/releases/individual/lib/libXau-${{package.version}}.tar.xz
+      expected-sha256: 2ed181446a61c7337576467870bc5336fc9e222a281122d96c4d39a3298bba00
+      uri: https://www.x.org/releases/individual/lib/libXi-${{package.version}}.tar.bz2
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libxau-dev
+  - name: libxi-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
-    description: libxau dev
-  - name: libxau-doc
+    dependencies:
+      runtime:
+        - libxi
+    description: libxi dev
+  - name: libxi-doc
     pipeline:
       - uses: split/manpages
-    description: libxau manpages
+    description: libxi manpages
