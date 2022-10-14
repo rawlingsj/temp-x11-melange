@@ -34,6 +34,9 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - runs: |
+      mkdir -p "${{targets.destdir}}/usr/share/doc/"
+      cp -a "doc" "${{targets.destdir}}/usr/share/doc/${{package.name}}-doc"
 subpackages:
   # - name: skalibs-static
   #   pipeline:

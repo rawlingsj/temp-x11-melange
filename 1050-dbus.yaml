@@ -1,0 +1,74 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/dbus/APKBUILD
+package:
+  name: dbus
+  version: 1.14.4
+  description: Freedesktop.org message bus system
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+        - "*"
+      attestation: TODO
+      license: AFL-2.1 OR GPL-2.0-or-later
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage3
+      - https://packages.wolfi.dev/os
+      - /work/packages
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ca-certificates-bundle
+      - build-base
+      - automake
+      - autoconf
+      # - util-linux-dev
+      - expat-dev
+      # - glib-dev
+      - libsm-dev
+      - libx11-dev
+      # - meson
+      - xmlto
+      # - util-linux-dev
+pipeline:
+  - uses: fetch
+    with:
+      expected-sha256: 7c0f9b8e5ec0ff2479383e62c0084a3a29af99edf1514e9f659b81b30d4e353e
+      uri: https://dbus.freedesktop.org/releases/dbus/dbus-${{package.version}}.tar.xz
+  - uses: autoconf/configure
+    with:
+      opts: |
+        --with-system-pid-file=/run/dbus/dbus.pid \
+        --enable-xml-docs=false \
+        --enable-doxygen-docs=false
+  # added --enable-doxygen-docs=false and --enable-xml-docs=false
+  - uses: autoconf/make
+  - uses: autoconf/make-install
+subpackages:
+  - name: dbus-dev
+    pipeline:
+      - uses: split/dev
+    dependencies:
+      runtime:
+        - dbus
+        # - util-linux-dev
+    description: dbus dev
+  # - name: dbus-doc
+  #   pipeline:
+  #     - uses: split/manpages
+  #   description: dbus manpages
+  # - name: dbus-libs
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: dbus FIXME
+  # - name: dbus-x11
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: dbus FIXME
+  # - name: dbus-openrc
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: dbus FIXME

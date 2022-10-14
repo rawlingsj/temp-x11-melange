@@ -1,16 +1,15 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libsm/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libpaper/APKBUILD
 package:
-  name: libsm
-  version: 1.2.3
-  epoch: 0
-  description: X11 Session Management library
+  name: libpaper
+  version: 1.1.28
+  description: Library for handling paper characteristics
   target-architecture:
     - all
   copyright:
     - paths:
         - "*"
       attestation: TODO
-      license: MIT
+      license: GPL-2.0-only
 environment:
   contents:
     repositories:
@@ -26,29 +25,27 @@ environment:
       - build-base
       - automake
       - autoconf
-      - libice-dev
-      - xorgproto
-      - xtrans
-      # - util-linux-dev lets hope we don't need this yet
-      - util-macros
-      - xmlto
+      - automake
+      - autoconf
+      - libtool
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 2d264499dcb05f56438dee12a1b4b71d76736ce7ba7aa6efbf15ebb113769cbb
-      uri: https://www.x.org/releases/individual/lib/libSM-${{package.version}}.tar.bz2
+      expected-sha256: c8bb946ec93d3c2c72bbb1d7257e90172a22a44a07a07fb6b802a5bb2c95fddc
+      uri: https://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_${{package.version}}.tar.gz
+  - runs: autoreconf -fi
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libsm-dev
+  - name: libpaper-dev
     pipeline:
       - uses: split/dev
     dependencies:
       runtime:
-        - libsm
-    description: libsm dev
-  # - name: libsm-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: libsm manpages
+        - libpaper
+    description: libpaper dev
+  - name: libpaper-doc
+    pipeline:
+      - uses: split/manpages
+    description: libpaper manpages

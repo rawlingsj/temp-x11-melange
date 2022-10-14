@@ -1,0 +1,38 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/docbook-xml/APKBUILD
+package:
+  name: docbook-xml
+  version: "4.5"
+  description: A widely used XML scheme for writing documentation and help
+  target-architecture:
+    - noarch
+  copyright:
+    - paths:
+        - "*"
+      attestation: TODO
+      license: MIT
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage3
+      - https://packages.wolfi.dev/os
+      - /work/packages
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ca-certificates-bundle
+      - build-base
+      - automake
+      - autoconf
+      # - libxml2-utils do we need this?
+pipeline:
+  - uses: fetch
+    with:
+      expected-sha256: 4e4e037a2b83c98c6c94818390d4bdd3f6e10f6ec62dd79188594e26190dc7b4
+      uri: https://www.docbook.org/xml/${{package.version}}/docbook-xml-${{package.version}}.zip
+      extract: false
+  - runs: unzip docbook-xml-${{package.version}}.zip .
+  - uses: autoconf/configure
+  - uses: autoconf/make
+  - uses: autoconf/make-install

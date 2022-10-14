@@ -50,10 +50,10 @@ subpackages:
       runtime:
         - utmps
     description: utmps dev
-  - name: utmps-doc
-    pipeline:
-      - uses: split/manpages
-    description: utmps manpages
+  # - name: utmps-doc
+  #   pipeline:
+  #     - uses: split/manpages
+  #   description: utmps manpages
   # - name: utmps-openrc
   #   pipeline:
   #     - uses: split/FIXME

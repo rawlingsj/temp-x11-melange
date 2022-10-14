@@ -1,15 +1,16 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/alsa-lib/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libusb/APKBUILD
 package:
-    name: alsa-lib
-    version: 1.2.7.2
-    description: Advanced Linux Sound Architecture (ALSA) library
+    name: libusb
+    version: 1.0.26
+    epoch: 0
+    description: Library that enables userspace access to USB devices
     target-architecture:
         - all
     copyright:
         - paths:
-            - '*'
+              - "*"
           attestation: TODO
-          license: LGPL-2.1-or-later
+          license: LGPL-2.0-or-later
 environment:
     contents:
         repositories:
@@ -26,18 +27,22 @@ environment:
             - automake
             - autoconf
             - linux-headers
+            - libatomic
 pipeline:
     - uses: fetch
       with:
-        expected-sha256: 8a35b7218e50f2a2c79342d0de98ded81439ce19e12809385ec9be9596de7c2f
-        uri: https://alsa-project.org/files/pub/lib/alsa-lib-${{package.version}}.tar.bz2
+          expected-sha256: 12ce7a61fc9854d1d2a1ffe095f7b5fac19ddba095c259e6067a46500381b5a5
+          uri: https://github.com/libusb/libusb/releases/download/v${{package.version}}/libusb-${{package.version}}.tar.bz2
     - uses: autoconf/configure
+      with:
+          opts: --disable-udev
     - uses: autoconf/make
     - uses: autoconf/make-install
 subpackages:
-    - name: alsa-lib-dbg
+    - name: libusb-dev
       pipeline:
-        - runs: FIXME
-    - name: alsa-lib-dev
-      pipeline:
-        - runs: FIXME
+          - uses: split/dev
+      dependencies:
+          runtime:
+              - libusb
+      description: libusb dev

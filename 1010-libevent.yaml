@@ -1,16 +1,16 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libsm/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/libevent/APKBUILD
 package:
-  name: libsm
-  version: 1.2.3
+  name: libevent
+  version: 2.1.12
   epoch: 0
-  description: X11 Session Management library
+  description: An event notification library
   target-architecture:
     - all
   copyright:
     - paths:
         - "*"
       attestation: TODO
-      license: MIT
+      license: BSD-3-Clause
 environment:
   contents:
     repositories:
@@ -26,29 +26,27 @@ environment:
       - build-base
       - automake
       - autoconf
-      - libice-dev
-      - xorgproto
-      - xtrans
-      # - util-linux-dev lets hope we don't need this yet
-      - util-macros
-      - xmlto
+      - python3
+      - openssl-dev
+      - python3-dev
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 2d264499dcb05f56438dee12a1b4b71d76736ce7ba7aa6efbf15ebb113769cbb
-      uri: https://www.x.org/releases/individual/lib/libSM-${{package.version}}.tar.bz2
+      expected-sha256: 92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb
+      uri: https://github.com/libevent/libevent/releases/download/release-${{package.version}}-stable/libevent-${{package.version}}-stable.tar.gz
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
 subpackages:
-  - name: libsm-dev
+  # - name: libevent-static
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: libevent FIXME
+  - name: libevent-dev
     pipeline:
       - uses: split/dev
     dependencies:
       runtime:
-        - libsm
-    description: libsm dev
-  # - name: libsm-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: libsm manpages
+        - libevent
+        - python3
+    description: libevent dev
