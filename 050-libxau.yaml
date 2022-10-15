@@ -8,7 +8,7 @@ package:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: MIT
 environment:
@@ -36,14 +36,15 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: libxau-dev
     pipeline:
       - uses: split/dev
-#    dependencies:
-#      runtime:
-#        - libxau
-#        - xorgproto
+    dependencies:
+      runtime:
+        - libxau
+        - xorgproto
     description: libxau dev
   - name: libxau-doc
     pipeline:

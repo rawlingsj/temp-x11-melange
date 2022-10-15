@@ -2,7 +2,8 @@
 set -e
 
 FROM=${1:-000}    
-FILES="*.yaml"
+FILES=`ls | sort -n -t - -k 1`
+
 for f in $FILES
 do
   if [[ "$f" == *".yaml" ]]; then

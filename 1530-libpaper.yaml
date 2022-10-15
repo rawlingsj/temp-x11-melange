@@ -35,8 +35,11 @@ pipeline:
       uri: https://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_${{package.version}}.tar.gz
   - runs: autoreconf -fi
   - uses: autoconf/configure
+    with:
+      opts: --disable-static
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: libpaper-dev
     pipeline:

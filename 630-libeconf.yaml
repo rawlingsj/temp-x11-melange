@@ -35,6 +35,7 @@ pipeline:
   - uses: meson/configure
   - uses: meson/compile
   - uses: meson/install
+  - uses: strip
 subpackages:
   - name: libeconf-dev
     pipeline:

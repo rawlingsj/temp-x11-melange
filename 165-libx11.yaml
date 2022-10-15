@@ -8,7 +8,7 @@ package:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: custom:XFREE86
 environment:
@@ -45,11 +45,12 @@ pipeline:
         --disable-thread-safety-constructor
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
-#  - name: libx11-static
-#    pipeline:
-#      - uses: split/FIXME
-#    description: libx11 FIXME
+  #  - name: libx11-static
+  #    pipeline:
+  #      - uses: split/FIXME
+  #    description: libx11 FIXME
   - name: libx11-dev
     pipeline:
       - uses: split/dev

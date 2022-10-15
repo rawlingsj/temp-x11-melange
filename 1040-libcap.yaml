@@ -27,6 +27,7 @@ environment:
       - autoconf
       - perl
       - bash
+      - tree
 
 pipeline:
   - uses: fetch
@@ -39,6 +40,8 @@ pipeline:
   - uses: autoconf/make-install
     with:
       opts: GOLANG=no
+  - uses: strip
+  - runs: tree
 subpackages:
   - name: libcap-doc
     pipeline:
@@ -56,10 +59,12 @@ subpackages:
         - libcap
         - linux-headers
     description: libcap dev
-  # - name: libcap-utils
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: libcap FIXME
+  - name: libcap-utils # lets check this!!
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/sbin
+          mv ${{targets.destdir}}/sbin ${{targets.subpkgdir}}/sbin
+    description: libcap FIXME
   # - name: libcap2
   #   pipeline:
   #     - runs: FIXME

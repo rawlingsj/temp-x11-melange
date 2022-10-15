@@ -13,9 +13,9 @@ package:
 environment:
   contents:
     repositories:
+      - /work/packages
       - https://packages.wolfi.dev/bootstrap/stage3
       - https://packages.wolfi.dev/os
-      - /work/packages
     keyring:
       - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
       - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
@@ -30,8 +30,9 @@ environment:
       # - glib-dev
       - libsm-dev
       - libx11-dev
-      # - meson
+      - meson
       - xmlto
+      - bash
       # - util-linux-dev
 pipeline:
   - uses: fetch
@@ -47,6 +48,7 @@ pipeline:
   # added --enable-doxygen-docs=false and --enable-xml-docs=false
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: dbus-dev
     pipeline:

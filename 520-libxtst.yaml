@@ -39,6 +39,7 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: libxtst-dev
     pipeline:

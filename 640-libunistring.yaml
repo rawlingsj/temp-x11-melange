@@ -26,6 +26,7 @@ environment:
       - build-base
       - automake
       - autoconf
+      - tree
 pipeline:
   - uses: fetch
     with:
@@ -34,6 +35,8 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
+  - runs: tree
 subpackages:
   # - name: libunistring-static
   #   pipeline:
@@ -46,7 +49,9 @@ subpackages:
       runtime:
         - libunistring
     description: libunistring dev
-  # - name: libunistring-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: libunistring manpages
+  - name: libunistring-doc
+    pipeline:
+      - runs: |
+          mkdir -p "${{targets.subpkgdir}}/usr/share"
+          mv "${{targets.destdir}}/usr/share/doc" "${{targets.subpkgdir}}/usr/share"
+    description: libunistring manpages

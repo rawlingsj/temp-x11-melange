@@ -30,6 +30,7 @@ environment:
       - ncurses-dev
       - libxml2-dev
       - libunistring-dev
+      - tree
 pipeline:
   - uses: fetch
     with:
@@ -39,9 +40,12 @@ pipeline:
     with:
       opts: |
         --enable-threads=posix \
-        --disable-java
+        --disable-java \
+        --enable-static
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
+  - runs: tree
 subpackages:
   # - name: gettext-dbg
   #   pipeline:
@@ -51,10 +55,12 @@ subpackages:
   #   pipeline:
   #     - uses: split/manpages
   #   description: gettext manpages
-  # - name: gettext-static
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: gettext FIXME
+  - name: gettext-static
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib
+          mv ${{targets.destdir}}/usr/lib/*.a ${{targets.subpkgdir}}/usr/lib/
+    description: static libraries
   - name: gettext-dev
     pipeline:
       - uses: split/dev
@@ -66,13 +72,21 @@ subpackages:
   #   pipeline:
   #     - uses: split/FIXME
   #   description: gettext FIXME
-  # - name: libintl
-  #   pipeline:
-  #     - runs: FIXME
-  # - name: gettext-asprintf
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: gettext FIXME
+  - name: libintl
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib
+          mv ${{targets.destdir}}/usr/lib/libintl.so.* ${{targets.subpkgdir}}/usr/lib
+          chmod +x ${{targets.subpkgdir}}/usr/lib/libintl.so.*
+    description: GNU gettext runtime library
+
+  - name: gettext-asprintf
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib
+          mv ${{targets.destdir}}/usr/lib/libasprintf.so.* ${{targets.subpkgdir}}/usr/lib
+    description: GNU gettext asprintf library
+
   # - name: gettext-libs
   #   pipeline:
   #     - uses: split/FIXME

@@ -7,7 +7,7 @@ package:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: GPL-2.0-or-later
 environment:
@@ -25,6 +25,11 @@ environment:
       - build-base
       - automake
       - autoconf
+      - libxslt
+      - perl-yaml-syck
+      - perl-test-pod
+      - bash
+      - docbook-xsl
 pipeline:
   - uses: fetch
     with:
@@ -33,6 +38,7 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: xmlto-doc
     pipeline:

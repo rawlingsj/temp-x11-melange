@@ -10,6 +10,9 @@ package: # worth checking the configure OPTS
         - "*"
       attestation: TODO
       license: ISC
+  dependencies:
+    runtime:
+      - s6-ipcserver
 environment:
   contents:
     repositories:
@@ -26,14 +29,38 @@ environment:
       - automake
       - autoconf
       - skalibs-dev
+      - tree
 pipeline:
   - uses: fetch
     with:
       expected-sha256: 9025d961b8271a0ecc8eeb5786126b6b799376afa6f2bd25c0f872fd24f1123c
       uri: https://skarnet.org/software/utmps/utmps-${{package.version}}.tar.gz
   - uses: autoconf/configure
+    with:
+      opts: |
+        --enable-shared \
+        --enable-static \
+        --disable-allstatic \
+        --libdir=/usr/lib \
+        --libexecdir=/lib/${{package.name}} \
+        --with-lib=/usr/lib \
+        --with-dynlib=/lib
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - runs: |
+      # TODO dont think these are being added to subpackages, should they?
+
+      install -D -m755 "${{targets.destdir}}/utmp-prepare.initd" "${{targets.destdir}}/etc/init.d/utmp-prepare"
+      install -D -m755 "${{targets.destdir}}/utmpd.initd" "${{targets.destdir}}/etc/init.d/utmpd"
+      install -D -m755 "${{targets.destdir}}/wtmpd.initd" "${{targets.destdir}}/etc/init.d/wtmpd"
+      install -D -m755 "${{targets.destdir}}/btmpd.initd" "${{targets.destdir}}/etc/init.d/btmpd"
+      install -D -m755 "${{targets.destdir}}/utmp-init.initd" "${{targets.destdir}}/etc/init.d/utmp-init"
+      install -D -m644 "${{targets.destdir}}/wtmpd.logrotate" "${{targets.destdir}}/etc/logrotate.d/wtmpd"
+      install -D -m644 "${{targets.destdir}}/btmpd.logrotate" "${{targets.destdir}}/etc/logrotate.d/btmpd"
+      install -D -m755 "${{targets.destdir}}/setup-utmp" "${{targets.destdir}}/sbin/setup-utmp"
+      install -D -m644 "${{targets.destdir}}/utmps.pc" "${{targets.destdir}}/usr/lib/pkgconfig/utmps.pc"
+  - runs: tree
+  - uses: strip
 subpackages:
   # - name: utmps-static
   #   pipeline:
@@ -43,17 +70,19 @@ subpackages:
   #   pipeline:
   #     - uses: split/FIXME
   #   description: utmps FIXME
-  - name: utmps-dev
-    pipeline:
-      - uses: split/dev
-    dependencies:
-      runtime:
-        - utmps
-    description: utmps dev
-  # - name: utmps-doc
+  # - name: utmps-dev
   #   pipeline:
-  #     - uses: split/manpages
-  #   description: utmps manpages
+  #     - uses: split/dev
+  #   dependencies:
+  #     runtime:
+  #       - utmps
+  # description: utmps dev
+  - name: utmps-doc
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/share
+          mv doc ${{targets.subpkgdir}}/usr/share/
+    description: utmps manpages
   # - name: utmps-openrc
   #   pipeline:
   #     - uses: split/FIXME

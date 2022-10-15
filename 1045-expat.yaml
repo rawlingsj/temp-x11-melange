@@ -1,9 +1,8 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/libxrandr/APKBUILD
 package:
-  name: libxrandr
-  version: 1.5.2
-  epoch: 0
-  description: X11 RandR extension library
+  name: expat
+  version: 2.4.9
+  epoch: 1
+  description: "XML SAX Parser library written in C"
   target-architecture:
     - all
   copyright:
@@ -11,6 +10,13 @@ package:
         - "*"
       attestation: TODO
       license: MIT
+  dependencies:
+    runtime:
+
+secfixes:
+  2.4.9-r0:
+    - CVE-2022-40674
+
 environment:
   contents:
     repositories:
@@ -24,33 +30,31 @@ environment:
       - busybox
       - ca-certificates-bundle
       - build-base
-      - automake
-      - autoconf
-      - xorgproto
-      - libxext-dev
-      - libx11-dev
-      - libxrender-dev
-      - util-macros
-      - libxext-dev
+      - tree
+
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 8aea0ebe403d62330bb741ed595b53741acf45033d3bda1792f1d4cc3daee023
-      uri: https://www.x.org/releases/individual/lib/libXrandr-${{package.version}}.tar.bz2
+      uri: https://downloads.sourceforge.net/project/expat/expat/${{package.version}}/expat-${{package.version}}.tar.bz2
+      expected-sha256: 7f44d1469b110773a94b0d5abeeeffaef79f8bd6406b07e52394bcf48126437a
+
   - uses: autoconf/configure
+    with:
+      opts: --datadir=/usr/share
   - uses: autoconf/make
   - uses: autoconf/make-install
   - uses: strip
+  - runs: tree
+
 subpackages:
-  - name: libxrandr-dev
+  - name: expat-dev
+    description: expat headers
     pipeline:
       - uses: split/dev
     dependencies:
       runtime:
-        - libxrandr
-        - libxext-dev
-    description: libxrandr dev
-  - name: libxrandr-doc
+        - expat
+  - name: expat-docs
+    description: expat docs
     pipeline:
       - uses: split/manpages
-    description: libxrandr manpages

@@ -32,11 +32,13 @@ pipeline:
       expected-sha256: e6d724b4c628f093df75c98f1274d8bd6c0ecdb09cc6816d3268bacb58647f30
       uri: https://skarnet.org/software/skalibs/skalibs-${{package.version}}.tar.gz
   - uses: autoconf/configure
+    with:
+      opts: |
+        --enable-shared \
+        --enable-static
   - uses: autoconf/make
   - uses: autoconf/make-install
-  - runs: |
-      mkdir -p "${{targets.destdir}}/usr/share/doc/"
-      cp -a "doc" "${{targets.destdir}}/usr/share/doc/${{package.name}}-doc"
+  - uses: strip
 subpackages:
   # - name: skalibs-static
   #   pipeline:
@@ -51,5 +53,7 @@ subpackages:
     description: skalibs dev
   - name: skalibs-doc
     pipeline:
-      - uses: split/manpages
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/share
+          mv doc ${{targets.subpkgdir}}/usr/share/
     description: skalibs manpages

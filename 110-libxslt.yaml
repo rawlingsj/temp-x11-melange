@@ -8,7 +8,7 @@ package:
     - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: custom
 environment:
@@ -40,6 +40,7 @@ pipeline:
       opts: --with-python=no
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
 subpackages:
   - name: libxslt-dev
     pipeline:

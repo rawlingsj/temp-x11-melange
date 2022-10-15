@@ -28,6 +28,7 @@ environment:
       - xorgproto
       - libx11-dev
       - util-macros
+      - tree
 pipeline:
   - uses: fetch
     with:
@@ -36,6 +37,10 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - runs: ls -al ${{targets.destdir}}
+  - uses: strip
+  - runs: ls -al ${{targets.destdir}}
+  - runs: tree
 subpackages:
   - name: libxrender-dev
     pipeline:
@@ -46,5 +51,7 @@ subpackages:
     description: libxrender dev
   - name: libxrender-doc
     pipeline:
-      - uses: split/manpages
+      - runs: |
+          mkdir -p "${{targets.subpkgdir}}/usr/share"
+          mv "${{targets.destdir}}/usr/share/doc" "${{targets.subpkgdir}}/usr/share"
     description: libxrender manpages

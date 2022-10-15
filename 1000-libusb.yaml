@@ -35,9 +35,12 @@ pipeline:
           uri: https://github.com/libusb/libusb/releases/download/v${{package.version}}/libusb-${{package.version}}.tar.bz2
     - uses: autoconf/configure
       with:
-          opts: --disable-udev
+          opts: |
+              --disable-udev \
+              --enable-static
     - uses: autoconf/make
     - uses: autoconf/make-install
+    - uses: strip
 subpackages:
     - name: libusb-dev
       pipeline:
