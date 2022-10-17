@@ -1,0 +1,55 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/openjade/APKBUILD
+package:
+    name: openjade
+    version: 1.3.2
+    description: Implementation of the DSSSL style language
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: custom
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - opensp-dev
+            - perl
+            - libtool
+            - autoconf
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
+        uri: https://prdownloads.sourceforge.net/openjade/openjade-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: openjade-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - openjade
+      description: openjade dev
+    - name: openjade-libs
+      pipeline:
+        - uses: split/FIXME
+      description: openjade FIXME
+    - name: openjade-doc
+      pipeline:
+        - uses: split/manpages
+      description: openjade manpages

@@ -1,0 +1,41 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-yaml-syck/APKBUILD
+package:
+    name: perl-yaml-syck
+    version: "1.34"
+    description: Fast, lightweight YAML loader and dumper
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: cc9156ccaebda798ebfe2f31b619e806577f860ed1704262f17ffad3c6e34159
+        uri: https://cpan.metacpan.org/authors/id/T/TO/TODDR/YAML-Syck-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-yaml-syck-doc
+      pipeline:
+        - runs: FIXME

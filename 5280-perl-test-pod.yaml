@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-test-pod/APKBUILD
+package:
+    name: perl-test-pod
+    version: "1.52"
+    description: check for POD errors in files
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/bootstrap/stage3
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 60a8dbcc60168bf1daa5cc2350236df9343e9878f4ab9830970a5dde6fe8e5fc
+        uri: https://cpan.metacpan.org/authors/id/E/ET/ETHER/Test-Pod-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-test-pod-doc
+      pipeline:
+        - runs: FIXME
