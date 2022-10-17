@@ -38,6 +38,7 @@ pipeline:
   - uses: autoconf/configure
     with:
       opts: |
+        --enable-static \
         --with-brotli \
         --with-bzip2 \
         --with-png \
@@ -53,6 +54,9 @@ subpackages:
     dependencies:
       runtime:
         - freetype
+        - libbrotlidec1 # manually added
+        - zlib # manually added
+        - libpng # manually added
     description: freetype dev
   - name: freetype-doc
     pipeline:

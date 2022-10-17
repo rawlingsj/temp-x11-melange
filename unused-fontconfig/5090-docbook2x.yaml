@@ -7,7 +7,7 @@ package:
         - all
     copyright:
         - paths:
-            - '*'
+              - "*"
           attestation: TODO
           license: MIT
 environment:
@@ -23,8 +23,6 @@ environment:
             - busybox
             - ca-certificates-bundle
             - build-base
-            - automake
-            - autoconf
             - autoconf
             - automake
             - texinfo
@@ -36,13 +34,13 @@ environment:
 pipeline:
     - uses: fetch
       with:
-        expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
-        uri: https://downloads.sourceforge.net/docbook2x/docbook2X-${{package.version}}.tar.gz
+          expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
+          uri: https://downloads.sourceforge.net/docbook2x/docbook2X-${{package.version}}.tar.gz
     - uses: autoconf/configure
     - uses: autoconf/make
     - uses: autoconf/make-install
 subpackages:
     - name: docbook2x-doc
       pipeline:
-        - uses: split/manpages
+          - uses: split/manpages
       description: docbook2x manpages

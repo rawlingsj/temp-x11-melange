@@ -1,57 +1,72 @@
 # Generated from https://git.alpinelinux.org/aports/plain/main/fontconfig/APKBUILD
 package:
-    name: fontconfig
-    version: 2.14.0
-    description: Library for configuring and customizing font access
-    target-architecture:
-        - all
-    copyright:
-        - paths:
-            - '*'
-          attestation: TODO
-          license: MIT
+  name: fontconfig
+  version: 2.14.0
+  description: Library for configuring and customizing font access
+  target-architecture:
+    - all
+  copyright:
+    - paths:
+        - "*"
+      attestation: TODO
+      license: MIT
 environment:
-    contents:
-        repositories:
-            - https://packages.wolfi.dev/bootstrap/stage3
-            - https://packages.wolfi.dev/os
-            - /work/packages
-        keyring:
-            - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
-            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
-        packages:
-            - busybox
-            - ca-certificates-bundle
-            - build-base
-            - automake
-            - autoconf
-            - freetype-dev
-            - expat-dev
-            - python3-dev
-            - gperf
-            - util-linux-dev
-            - docbook2x
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/bootstrap/stage3
+      - https://packages.wolfi.dev/os
+      - /work/packages
+    keyring:
+      - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - busybox
+      - ca-certificates-bundle
+      - build-base
+      - automake
+      - autoconf
+      - freetype-dev
+      - expat-dev
+      - python3-dev
+      - python3
+      - gperf
+      - zlib-dev # manually added
+      - brotli-dev # manually added
+      - libpng-dev # manually added
+      - bzip2-dev # manually added
+
+      # - util-linux-dev can we avoid this?
+      # - docbook2x # manually disabled to avoid building docbook* packages for now
 pipeline:
-    - uses: fetch
-      with:
-        expected-sha256: b8f607d556e8257da2f3616b4d704be30fd73bd71e367355ca78963f9a7f0434
-        uri: https://www.freedesktop.org/software/fontconfig/release/fontconfig-${{package.version}}.tar.gz
-    - uses: autoconf/configure
-    - uses: autoconf/make
-    - uses: autoconf/make-install
+  - uses: fetch
+    with:
+      expected-sha256: b8f607d556e8257da2f3616b4d704be30fd73bd71e367355ca78963f9a7f0434
+      uri: https://www.freedesktop.org/software/fontconfig/release/fontconfig-${{package.version}}.tar.gz
+  - runs: rm -f src/fcobjshash.h
+  - uses: autoconf/configure
+    with:
+      opts: |
+        --enable-static \
+        --enable-docs \
+        --disable-nls \
+        --disable-docs
+  # manually --disable-docs to avoid building docbook* packages for now
+  - runs: rm -f src/fcobjhash.h
+  - uses: autoconf/make
+  - uses: autoconf/make-install
 subpackages:
-    - name: fontconfig-static
-      pipeline:
-        - uses: split/FIXME
-      description: fontconfig FIXME
-    - name: fontconfig-dev
-      pipeline:
-        - uses: split/dev
-      dependencies:
-        runtime:
-            - fontconfig
-      description: fontconfig dev
-    - name: fontconfig-doc
-      pipeline:
-        - uses: split/manpages
-      description: fontconfig manpages
+  # - name: fontconfig-static
+  #   pipeline:
+  #     - uses: split/FIXME
+  #   description: fontconfig FIXME
+  - name: fontconfig-dev
+    pipeline:
+      - uses: split/dev
+    dependencies:
+      runtime:
+        - fontconfig
+    description: fontconfig dev
+  # - name: fontconfig-doc
+  #   pipeline:
+  #     - uses: split/manpages
+  #   description: fontconfig manpages # DISABLED DOCS IN ./configure to avoid compiling docbook* packages
