@@ -40,10 +40,6 @@ pipeline:
       rm -f "${{targets.destdir}}"/usr/share/info/dir
   - uses: strip
 subpackages:
-  #  - name: libgcrypt-static
-  #    pipeline:
-  #      - uses: split/FIXME
-  #    description: libgcrypt FIXME
   - name: libgcrypt-dev
     pipeline:
       - uses: split/dev

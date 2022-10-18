@@ -2,6 +2,7 @@
 package:
   name: xmlto
   version: 0.0.28
+  epoch: 0
   description: Convert xml to many other formats
   target-architecture:
     - all
@@ -25,11 +26,11 @@ environment:
       - build-base
       - automake
       - autoconf
-      - libxslt
-      - perl-yaml-syck
-      - perl-test-pod
+      # - libxslt # why was this here?!?
+      # - perl-yaml-syck
+      # - perl-test-pod
       - bash
-      - docbook-xsl
+      # - docbook-xsl
 pipeline:
   - uses: fetch
     with:

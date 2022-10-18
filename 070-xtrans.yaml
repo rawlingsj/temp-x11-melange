@@ -5,10 +5,10 @@ package:
   epoch: 0
   description: X transport library
   target-architecture:
-    - noarch
+    - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: MIT
 environment:

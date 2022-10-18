@@ -1,5 +1,5 @@
 package:
-  name: jdk17
+  name: openjdk17
   version: 17.0.4.1
   epoch: 0
   description:
@@ -11,13 +11,9 @@ package:
       attestation:
       license: |
         Apache License, Version 2.0
-        Eclipse Distribution License 1.0 (BSD)
-        Eclipse Public License 2.0
-        一 (Secondary) GNU General Public License, version 2 with OpenJDK Assembly Exception
-        一 (Secondary) GNU General Public License, version 2 with the GNU Classpath Exception
-  dependencies:
-    runtime:
-      - zlib
+  # dependencies:
+  #   runtime:
+  #     - zlib
 
 environment:
   contents:
@@ -49,6 +45,7 @@ environment:
       - zip
       - fontconfig-dev
       - tree
+      - libxi-dev
 
 pipeline:
   # should we just use OpenJDK directly rather than adoptium?
@@ -66,8 +63,6 @@ pipeline:
       uri: https://github.com/google/googletest/archive/release-1.8.1.tar.gz
       expected-sha256: 9bf1fe5182a604b4135edc1a425ae356c9ad15e9b23f9f12a02e80184c3a249c
       strip-components: 0
-  - runs: tree
-  - runs: sed -i "s|X11\/extensions\/XTest.h\s||g"  make/autoconf/lib-x11.m4 # HACK to get past configure error need to FIX PROPERLY!!!
   - runs: chmod +x configure
   - uses: autoconf/configure
     with:
@@ -81,19 +76,27 @@ pipeline:
         --disable-warnings-as-errors \
         --disable-precompiled-headers \
         --enable-dtrace=no \
+        --with-zlib=system \
+        --with-native-debug-symbols=none \
+        --disable-warnings-as-errors \
+        --disable-precompiled-headers \
+        --with-jvm-variants=server \
+        --with-debug-level=release \
+        --with-jtreg=no
+  #         --with-libjpeg=system \
+  #         --with-giflib=system \
+  #         --with-libpng=system \
+  #         --with-lcms=system \
   - runs: make jdk-image
+  - runs: |
+      mkdir -p ${{targets.destdir}}/usr/lib/jvm/java-17-openjdk
+      cp -r ./build/linux-*-server-release/images/jdk/* ${{targets.destdir}}/usr/lib/jvm/java-17-openjdk
+      # mv build/* ${{targets.destdir}}/
 
-  # - uses: autoconf/make
-  # - uses: autoconf/make-install
-
-subpackages:
-  - name: jdk17_dev
-    pipeline:
-      - runs: |
-          mkdir -p ${{targets.subpkgdir}}/usr/lib
-          mv ${{targets.subpkgdir}}/usr/lib/libintl.so.* ${{targets.subpkgdir}}/usr/lib
-          chmod +x ${{targets.subpkgdir}}/usr/lib/libintl.so.*
-
-          mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk
-          cp -r ${{targets.destdir}}/build/linux-*-server-release/images/jdk/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk/
-    description: Java Development Kit 17
+# subpackages:
+#   - name: jdk17_dev
+#     pipeline:
+#       - runs: |
+#           mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk
+#           cp -r ${{targets.destdir}}/linux-*-server-release/images/jdk/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk
+#     description: Java Development Kit 17

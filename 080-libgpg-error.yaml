@@ -26,6 +26,7 @@ environment:
       - build-base
       - automake
       - autoconf
+      - tree
 pipeline:
   - uses: fetch
     with:
@@ -33,11 +34,14 @@ pipeline:
       uri: https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${{package.version}}.tar.bz2
   - uses: autoconf/configure
     with:
-      opts: --disable-nls
-
+      opts: |
+        --disable-nls \
+        --enable-static \
+        --sysconfdir=/etc
   - uses: autoconf/make
   - uses: autoconf/make-install
   - uses: strip
+  - runs: tree ${{targets.destdir}}
 subpackages:
   - name: libgpg-error-dev
     pipeline:
@@ -46,7 +50,3 @@ subpackages:
       runtime:
         - libgpg-error
     description: libgpg-error dev
-#  - name: libgpg-error-doc
-#    pipeline:
-#      - uses: split/manpages
-#    description: libgpg-error manpages

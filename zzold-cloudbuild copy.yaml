@@ -1,0 +1,77 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud secrets versions access --secret=jr-dev-melange-public latest > /secrets/local-melange.rsa.pub
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud secrets versions access --secret=jr-dev-melange-private latest > /secrets/local-melange.rsa
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /work/packages
+    volumes:
+      - name: "work"
+        path: "/work"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud alpha storage cp --recursive gs://jrawlings-chainguard-dev/packages/* /work/packages/
+
+    volumes:
+      - name: "work"
+        path: "/work"
+  - name: busybox
+    args: ["ls", "-al", "/work/packages"]
+    volumes:
+      - name: "work"
+        path: "/work"
+
+  - name: cgr.dev/chainguard/melange
+    entrypoint: /usr/bin/melange
+
+    args:
+      - build
+      - 6000-openjdk-17.yaml
+      - --arch
+      - amd64
+      - --keyring-append
+      - /secrets/local-melange.rsa.pub
+      - --signing-key
+      - /secrets/local-melange.rsa
+      - --out-dir
+      - /work/packages
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+      - name: "work"
+        path: "/work"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        ls -al /work/packages/x86_64
+        find /work/packages -print -exec touch \{} \;
+        gcloud alpha storage cp --recursive /work/packages/* gs://jrawlings-chainguard-dev/packages
+    volumes:
+      - name: "work"
+        path: "/work"
+options:
+  # machineType: "E2_HIGHCPU_8" # takes ~ 14 mins
+  machineType: "E2_HIGHCPU_32" # takes ~ 5 mins

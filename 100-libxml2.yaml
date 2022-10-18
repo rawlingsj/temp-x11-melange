@@ -46,6 +46,7 @@ pipeline:
   - uses: autoconf/make
   - uses: autoconf/make-install
   - uses: strip
+  -
 subpackages:
   #  - name: libxml2-dbg
   #    pipeline:

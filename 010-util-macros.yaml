@@ -2,12 +2,13 @@
 package:
   name: util-macros
   version: 1.19.3
+  epoch: 0
   description: X.Org Autotools macros
   target-architecture:
-    - noarch
+    - all
   copyright:
     - paths:
-        - '*'
+        - "*"
       attestation: TODO
       license: MIT
 environment:

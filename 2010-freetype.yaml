@@ -54,9 +54,14 @@ subpackages:
     dependencies:
       runtime:
         - freetype
-        - libbrotlidec1 # manually added
-        - zlib # manually added
-        - libpng # manually added
+        # - libbrotlidec1 # manually added
+        # - zlib # manually added
+        # - libpng # manually added
+        # - zlib-dev
+        - libx11-dev
+        - libpng-dev
+        - bzip2-dev
+        - brotli-dev
     description: freetype dev
   - name: freetype-doc
     pipeline:

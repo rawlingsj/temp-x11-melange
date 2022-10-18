@@ -2,6 +2,7 @@ dag
 local-melange.rsa
 local-melange.rsa.pub
 packages/
+test*/
 *.svg
 *.json
 *.cdx
