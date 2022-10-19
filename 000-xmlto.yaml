@@ -26,11 +26,12 @@ environment:
       - build-base
       - automake
       - autoconf
-      # - libxslt # why was this here?!?
+      - bash
+      # - libxslt # TODO why was this here?!?
       # - perl-yaml-syck
       # - perl-test-pod
-      - bash
       # - docbook-xsl
+
 pipeline:
   - uses: fetch
     with:

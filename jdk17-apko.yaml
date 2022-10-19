@@ -1,0 +1,29 @@
+contents:
+  repositories:
+    - https://packages.wolfi.dev/bootstrap/stage3
+    - https://packages.wolfi.dev/os
+    - /work/test1
+  keyring:
+    - https://packages.wolfi.dev/bootstrap/stage3/wolfi-signing.rsa.pub
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - ca-certificates-bundle
+    - wolfi-baselayout
+    - busybox
+    - openjdk17
+    - bash
+
+accounts:
+  groups:
+    - groupname: jdk
+      gid: 70
+  users:
+    - username: jdk
+      uid: 70
+  run-as: jdk
+
+environment:
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+  PATH: /usr/sbin:/sbin:/usr/bin:/bin:/usr/lib/jvm/java-17-openjdk/bin
+
+work-dir: /home/jdk

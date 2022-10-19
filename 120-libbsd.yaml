@@ -26,11 +26,8 @@ environment:
       - build-base
       - automake
       - autoconf
-      #      - bsd-compat-headers
-      - linux-headers
       - libmd-dev
-      - glibc-dev
-#      - libbsd-dev
+
 pipeline:
   - uses: fetch
     with:
@@ -39,20 +36,14 @@ pipeline:
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install
+
   - uses: strip
 subpackages:
-  #  - name: libbsd-static
-  #    pipeline:
-  #      - uses: split/FIXME
-  #    description: libbsd FIXME
   - name: libbsd-dev
     pipeline:
       - uses: split/dev
     dependencies:
       runtime:
-        #        - libbsd
-        #        - bsd-compat-headers
-        #        - linux-headers
         - libmd-dev
         - libbsd=${{package.version}}-${{package.epoch}}
     description: libbsd dev

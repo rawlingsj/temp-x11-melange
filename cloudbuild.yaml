@@ -26,16 +26,16 @@ steps:
     volumes:
       - name: "work"
         path: "/work"
-  # - name: "gcr.io/cloud-builders/gcloud"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       gcloud alpha storage cp --recursive gs://jrawlings-chainguard-dev/packages/* /work/packages/
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud alpha storage cp --recursive gs://jrawlings-chainguard-dev/jdk-demo/* /work/packages/
 
-  #   volumes:
-  #     - name: "work"
-  #       path: "/work"
+    volumes:
+      - name: "work"
+        path: "/work"
 
   - name: cgr.dev/chainguard/melange
     entrypoint: sh
@@ -52,7 +52,7 @@ steps:
     args:
       - "-c"
       - |
-        gcloud alpha storage cp --recursive /work/packages/* gs://jrawlings-chainguard-dev/test1
+        gcloud alpha storage cp --recursive /work/packages/* gs://jrawlings-chainguard-dev/jdk-demo
     volumes:
       - name: "work"
         path: "/work"
