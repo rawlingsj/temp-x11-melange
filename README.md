@@ -41,5 +41,46 @@ docker run --platform linux/arm64 --privileged -v "$PWD":/work cgr.dev/chainguar
 
 Linux
 ```sh
-melange build /work/100-libxml2.yaml --keyring-append local-melange.rsa.pub --signing-key local-melange.rsa
+melange build 100-libxml2.yaml --keyring-append local-melange.rsa.pub --signing-key local-melange.rsa
+```
+
+### Building an image
+
+Using APKO we can build an image for the JDK.
+
+Docker
+```sh
+docker run --platform linux/arm64 --rm -v ${PWD}:/work distroless.dev/apko build /work/jdk17-apko.yaml jdk:test /work/jdk-test.tar --build-arch amd64 --keyring-append local-melange.rsa.pub
+```
+
+Linux
+```sh
+apko build jdk17-apko.yaml jdk:test jdk-test.tar --keyring-append local-melange.rsa.pub
+```
+
+Using docker you can test the image...
+```sh
+docker load < jdk-test.tar
+docker run -ti jdk:test bash
+```
+
+Execute a Java command...
+```sh
+java --version
+```
+
+Or test compiling and running a Java application...
+```sh
+cat >HelloWolfi.java <<EOL
+class HelloWolfi
+{
+    public static void main(String args[])
+    {
+        System.out.println("Hello Wolfi users!");
+    }
+}
+EOL
+
+javac HelloWolfi.java
+java HelloWolfi
 ```
