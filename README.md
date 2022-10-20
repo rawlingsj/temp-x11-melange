@@ -43,6 +43,33 @@ Linux
 ```sh
 melange build 100-libxml2.yaml --keyring-append local-melange.rsa.pub --signing-key local-melange.rsa
 ```
+### Using Google Cloud Builder
+
+Compiling the JDK is CPU intensive.  Running on a Mac via Docker was very slow, over 1.5 hours for the openJDK itself and then hangs.  There is also a `cloudbuild.yaml` that can be used to build packages and store the results in a bucket.
+
+#### Setup
+
+You will need to
+- create a GCS bucket
+- enable the Google Cloud Build API
+- enable Google Secrets Manager API
+- create two secrets containing public and private melange signing keys.  I used the Google Secrets Manager console but you could use a CLI.  In this example I called them `jr-dev-melange-public` and `jr-dev-melange-private`
+
+- add IAM policy bindings so Google Cloud Build service account can retrieve secrets
+```sh
+gcloud beta secrets add-iam-policy-binding jr-dev-melange-private \
+  --member=serviceAccount:1017061756145@cloudbuild.gserviceaccount.com  \
+  --role=roles/secretmanager.secretAccessor
+
+gcloud beta secrets add-iam-policy-binding jr-dev-melange-public \
+  --member=serviceAccount:1017061756145@cloudbuild.gserviceaccount.com  \
+  --role=roles/secretmanager.secretAccessor
+```
+- modify the `cloudbuild.yaml` to reflect the name of your GCS bucket and public / private key secret names
+- submit the build
+```sh
+gcloud builds submit
+```
 
 ### Building an image
 
