@@ -90,14 +90,14 @@ pipeline:
       cp -r ./build/linux-*-server-release/images/jdk/* ${{targets.destdir}}/usr/lib/jvm/java-17-openjdk
       # mv build/* ${{targets.destdir}}/
 
-subpackages:
-  - name: openjdk17-jre
-    pipeline:
-      - runs: |
-          mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
-          # generate JRE via jlink?
-          # get full list of modules via `java --list-modules`
-          # strip chars from list and turn into a single line string
-          # jlink --no-header-files --no-man-pages --compress=2 --add-modules $LIST_MODULES--output jre
-          # cp -r ${{targets.destdir}}/jre/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
-    description: OpenJDK 17 (JRE)
+# subpackages:
+#   - name: openjdk17-jre
+#     pipeline:
+#       - runs: |
+#           mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
+#           # generate JRE via jlink?
+#           # get full list of modules via `java --list-modules`
+#           # strip chars from list and turn into a single line string
+#           # jlink --no-header-files --no-man-pages --compress=2 --add-modules $LIST_MODULES--output jre
+#           # cp -r ${{targets.destdir}}/jre/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
+#     description: OpenJDK 17 (JRE)
