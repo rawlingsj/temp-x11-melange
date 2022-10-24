@@ -2,6 +2,7 @@
 package:
   name: freetype
   version: 2.12.1
+  epoch: 0
   description: TrueType font rendering library
   target-architecture:
     - all
@@ -10,6 +11,13 @@ package:
         - "*"
       attestation: TODO
       license: FTL GPL-2.0-or-later
+
+secfixes:
+  2.12.1-r0:
+    - CVE-2022-27404
+    - CVE-2022-27405
+    - CVE-2022-27406
+
 environment:
   contents:
     repositories:
@@ -48,16 +56,16 @@ pipeline:
   - uses: autoconf/make-install
   - uses: strip
 subpackages:
+  - name: libice-static
+    description: libice static library
+    pipeline:
+      - uses: split/static
   - name: freetype-dev
     pipeline:
       - uses: split/dev
     dependencies:
       runtime:
         - freetype
-        # - libbrotlidec1 # manually added
-        # - zlib # manually added
-        # - libpng # manually added
-        # - zlib-dev
         - libx11-dev
         - libpng-dev
         - bzip2-dev

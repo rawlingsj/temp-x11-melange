@@ -2,6 +2,7 @@
 package:
   name: dbus
   version: 1.14.4
+  epoch: 0
   description: Freedesktop.org message bus system
   target-architecture:
     - all
@@ -10,6 +11,13 @@ package:
         - "*"
       attestation: TODO
       license: AFL-2.1 OR GPL-2.0-or-later
+
+secfixes:
+  1.14.4-r0:
+    - CVE-2022-42010
+    - CVE-2022-42011
+    - CVE-2022-42012
+
 environment:
   contents:
     repositories:
@@ -25,15 +33,14 @@ environment:
       - build-base
       - automake
       - autoconf
-      # - util-linux-dev
       - expat-dev
-      # - glib-dev
       - libsm-dev
       - libx11-dev
       - meson
       - xmlto
       - bash
-      # - util-linux-dev
+      # - glib-dev # TODO do we need this?  This and downstream packages are compiling fine
+      # - util-linux-dev # TODO adding unit-linux at a later date
 pipeline:
   - uses: fetch
     with:
@@ -45,11 +52,30 @@ pipeline:
         --with-system-pid-file=/run/dbus/dbus.pid \
         --enable-xml-docs=false \
         --enable-doxygen-docs=false
-  # added --enable-doxygen-docs=false and --enable-xml-docs=false
+
   - uses: autoconf/make
   - uses: autoconf/make-install
   - uses: strip
 subpackages:
+  - name: dbus-doc
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/share
+          mv ${{targets.destdir}}/usr/share/doc ${{targets.subpkgdir}}/usr/share
+    description: dbus manpages
+  - name: dbus-libs
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib
+          mv ${{targets.destdir}}/usr/lib/lib*.so.* ${{targets.subpkgdir}}/usr/lib
+
+    description: D-BUS access libraries
+  - name: dbus-x11
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/bin/dbus-launch ${{targets.subpkgdir}}/usr/bin/dbus-launch
+    description: X11 add-ons for D-BUS
   - name: dbus-dev
     pipeline:
       - uses: split/dev
@@ -58,19 +84,3 @@ subpackages:
         - dbus
         # - util-linux-dev
     description: dbus dev
-  # - name: dbus-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: dbus manpages
-  # - name: dbus-libs
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: dbus FIXME
-  # - name: dbus-x11
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: dbus FIXME
-  # - name: dbus-openrc
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: dbus FIXME

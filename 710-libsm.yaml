@@ -29,7 +29,7 @@ environment:
       - libice-dev
       - xorgproto
       - xtrans
-      # - util-linux-dev lets hope we don't need this yet
+      # - util-linux-dev TODO let's do util-linux-dev later and enable the configure flag --with-libuuid below
       - util-macros
       - xmlto
       - bash
@@ -45,7 +45,7 @@ pipeline:
         --with-xmlto \
         --without-fop
 
-  #         --with-libuuid  as would rather not build util-linux-dev yet
+  # --with-libuuid TODO as above, would rather not build util-linux-dev yet
 
   - uses: autoconf/make
   - uses: autoconf/make-install
@@ -57,8 +57,11 @@ subpackages:
     dependencies:
       runtime:
         - libsm
+        # - libice # verify libxmu works with this rather than -dev
     description: libsm dev
-  # - name: libsm-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: libsm manpages
+  - name: libsm-doc
+    pipeline:
+      - runs: |
+          mkdir -p "${{targets.subpkgdir}}/usr/share"
+          mv "${{targets.destdir}}/usr/share/doc" "${{targets.subpkgdir}}/usr/share"
+    description: libsm manpages

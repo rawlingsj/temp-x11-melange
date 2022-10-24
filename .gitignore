@@ -1,3 +1,4 @@
+.DS_Store
 dag
 local-melange.rsa
 local-melange.rsa.pub
@@ -7,3 +8,4 @@ test*/
 *.json
 *.cdx
 *.tar
+jdk-demo/

@@ -35,8 +35,7 @@ environment:
       - libpng-dev # manually added
       - bzip2-dev # manually added
 
-      # - util-linux-dev can we avoid this?
-      # - docbook2x # manually disabled to avoid building docbook* packages for now
+      # - docbook2x # TODO disabling docs so we can avoid docbook2x for now
 pipeline:
   - uses: fetch
     with:
@@ -54,11 +53,13 @@ pipeline:
   - runs: rm -f src/fcobjhash.h
   - uses: autoconf/make
   - uses: autoconf/make-install
+  - uses: strip
+
 subpackages:
-  # - name: fontconfig-static
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: fontconfig FIXME
+  - name: fontconfig-static
+    description: fontconfig static library
+    pipeline:
+      - uses: split/static
   - name: fontconfig-dev
     pipeline:
       - uses: split/dev
@@ -66,7 +67,3 @@ subpackages:
       runtime:
         - fontconfig
     description: fontconfig dev
-  # - name: fontconfig-doc
-  #   pipeline:
-  #     - uses: split/manpages
-  #   description: fontconfig manpages # DISABLED DOCS IN ./configure to avoid compiling docbook* packages

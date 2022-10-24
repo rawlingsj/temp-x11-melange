@@ -33,7 +33,6 @@ environment:
       - autoconf
       - automake
       - bash
-      - tree
 
 pipeline:
   - uses: fetch
@@ -51,10 +50,16 @@ pipeline:
   - uses: autoconf/make-install
   - uses: strip
 subpackages:
-  # - name: libice-static
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: libice FIXME
+  - name: libice-static
+    description: libice static library
+    pipeline:
+      - uses: split/static
+  - name: libice-doc
+    pipeline:
+      - runs: |
+          mkdir -p "${{targets.subpkgdir}}/usr/share"
+          mv "${{targets.destdir}}/usr/share/doc" "${{targets.subpkgdir}}/usr/share"
+    description: libice manpages
   - name: libice-dev
     pipeline:
       - uses: split/dev
@@ -62,9 +67,3 @@ subpackages:
       runtime:
         - libice
     description: libice dev
-  - name: libice-doc
-    pipeline:
-      - runs: |
-          mkdir -p "${{targets.subpkgdir}}/usr/share"
-          mv "${{targets.destdir}}/usr/share/doc" "${{targets.subpkgdir}}/usr/share"
-    description: libice manpages

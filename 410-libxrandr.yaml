@@ -31,7 +31,6 @@ environment:
       - libx11-dev
       - libxrender-dev
       - util-macros
-      - libxext-dev
 pipeline:
   - uses: fetch
     with:

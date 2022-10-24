@@ -1,7 +1,7 @@
 # Generated from https://git.alpinelinux.org/aports/plain/main/libxi/APKBUILD
 package:
   name: libxi
-  version: "1.8"
+  version: 1.8
   epoch: 0
   description: X11 Input extension library
   target-architecture:

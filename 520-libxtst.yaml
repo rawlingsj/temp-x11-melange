@@ -49,7 +49,7 @@ subpackages:
     dependencies:
       runtime:
         - libxtst
-        - libxi-dev # required by X11/extensions/XTest.h when configuing and compiling JDK, though should this be -dev or not?
+        - libxi # required by X11/extensions/XTest.h when configuring and compiling JDK
     description: libxtst dev
   - name: libxtst-doc
     pipeline:

@@ -1,10 +1,11 @@
-# Generated from https://git.alpinelinux.org/aports/plain/main/docbook-xml/APKBUILD
+# Generated from https://git.alpinelinux.org/aports/plain/main/xcb-proto/APKBUILD
 package:
-  name: docbook-xml
-  version: "4.5"
-  description: A widely used XML scheme for writing documentation and help
+  name: xcb-proto
+  version: 1.15.2
+  epoch: 0
+  description: XML-XCB protocol descriptions
   target-architecture:
-    - noarch
+    - all
   copyright:
     - paths:
         - "*"
@@ -25,14 +26,12 @@ environment:
       - build-base
       - automake
       - autoconf
-      # - libxml2-utils do we need this?
+      - python3
 pipeline:
   - uses: fetch
     with:
-      expected-sha256: 4e4e037a2b83c98c6c94818390d4bdd3f6e10f6ec62dd79188594e26190dc7b4
-      uri: https://www.docbook.org/xml/${{package.version}}/docbook-xml-${{package.version}}.zip
-      extract: false
-  - runs: unzip docbook-xml-${{package.version}}.zip .
+      expected-sha256: 7072beb1f680a2fe3f9e535b797c146d22528990c72f63ddb49d2f350a3653ed
+      uri: https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-${{package.version}}.tar.xz
   - uses: autoconf/configure
   - uses: autoconf/make
   - uses: autoconf/make-install

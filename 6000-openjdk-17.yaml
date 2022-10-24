@@ -11,9 +11,6 @@ package:
       attestation:
       license: |
         Apache License, Version 2.0
-  # dependencies:
-  #   runtime:
-  #     - zlib
 
 environment:
   contents:
@@ -44,8 +41,8 @@ environment:
       - bash
       - zip
       - fontconfig-dev
-      - tree
       - libxi-dev
+      - tree
 
 pipeline:
   # should we just use OpenJDK directly rather than adoptium?
@@ -88,16 +85,19 @@ pipeline:
   #         --with-libpng=system \
   #         --with-lcms=system \
   - runs: make jdk-image
-  # - runs: strip
   - runs: |
       mkdir -p ${{targets.destdir}}/usr/lib/jvm/java-17-openjdk
       cp -r ./build/linux-*-server-release/images/jdk/* ${{targets.destdir}}/usr/lib/jvm/java-17-openjdk
       # mv build/* ${{targets.destdir}}/
 
-# subpackages:
-#   - name: jdk17_dev
-#     pipeline:
-#       - runs: |
-#           mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk
-#           cp -r ${{targets.destdir}}/linux-*-server-release/images/jdk/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk
-#     description: Java Development Kit 17
+subpackages:
+  - name: openjdk17-jre
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
+          # generate JRE via jlink?
+          # get full list of modules via `java --list-modules`
+          # strip chars from list and turn into a single line string
+          # jlink --no-header-files --no-man-pages --compress=2 --add-modules $LIST_MODULES--output jre
+          # cp -r ${{targets.destdir}}/jre/* ${{targets.subpkgdir}}/usr/lib/jvm/java-17-openjdk-jre
+    description: OpenJDK 17 (JRE)

@@ -2,6 +2,7 @@
 package:
   name: libxt
   version: 1.2.1
+  epoch: 0
   description: X11 toolkit intrinsics library
   target-architecture:
     - all
@@ -48,6 +49,7 @@ subpackages:
     dependencies:
       runtime:
         - libxt
+        # - libice # verify libxmu works with this rather than -dev
         - libsm-dev
     description: libxt dev
   - name: libxt-doc

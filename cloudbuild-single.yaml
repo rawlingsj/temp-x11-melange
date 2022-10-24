@@ -1,0 +1,61 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud secrets versions access --secret=jr-dev-melange-public latest > /secrets/local-melange.rsa.pub
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud secrets versions access --secret=jr-dev-melange-private latest > /secrets/local-melange.rsa
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /work/packages
+    volumes:
+      - name: "work"
+        path: "/work"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud alpha storage cp --recursive gs://jrawlings-chainguard-dev/jdk-demo/* /work/packages/
+
+    volumes:
+      - name: "work"
+        path: "/work"
+
+  - name: cgr.dev/chainguard/melange
+    entrypoint: sh
+    args:
+      - ./build-gcb-single.sh
+      - "710"
+    volumes:
+      - name: "secrets"
+        path: "/secrets"
+      - name: "work"
+        path: "/work"
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud alpha storage cp --recursive /work/packages/* gs://jrawlings-chainguard-dev/jdk-demo
+    volumes:
+      - name: "work"
+        path: "/work"
+options:
+  machineType: "E2_HIGHCPU_8" # takes ~ 14 mins
+  # machineType: "E2_HIGHCPU_32" # takes ~ 5 mins

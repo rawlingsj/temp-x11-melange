@@ -2,6 +2,7 @@
 package:
   name: cups
   version: 2.4.2
+  epoch: 0
   description: The CUPS Printing System
   target-architecture:
     - all
@@ -10,6 +11,11 @@ package:
         - "*"
       attestation: TODO
       license: GPL-2.0-only
+
+secfixes:
+  2.4.2-r0:
+    - CVE-2022-26691
+
 environment:
   contents:
     repositories:
@@ -31,8 +37,7 @@ environment:
       - dbus-dev
       - libusb-dev
       - libgcrypt-dev
-      # - openssl causes configure to not find openssl for some reason.  It's pulled in from another package anyway so can ommit
-      # - cups-client built as part of this?
+
       # - poppler-utils do we need this?
       # - libjpeg-turbo-dev do we need this?
       # - avahi-dev do we need this?
@@ -66,18 +71,48 @@ pipeline:
         --with-tls=openssl \
         --with-optim="$CFLAGS"
 
-  # trying openssl for TLS rather than         --enable-gnutls \
-  #--disable-launchd \
-
   - uses: autoconf/make
   - uses: autoconf/make-install
   - uses: strip
 subpackages:
-  # - name: cups-dbg
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: cups FIXME
+  - name: cups-doc
+    description: cups manpages
+    pipeline:
+      - uses: split/manpages
+
+  - name: cups-libs
+    description: CUPS libraries
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/lib
+          mv ${{targets.destdir}}/usr/lib/*.so* ${{targets.subpkgdir}}/usr/lib
+
+          mkdir -p ${{targets.subpkgdir}}/etc
+          mv ${{targets.destdir}}/usr/etc/cups ${{targets.subpkgdir}}/etc
+
+  - name: ipptool
+    description: Perform internet printing protocol requests
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/bin/ipptool ${{targets.subpkgdir}}/usr/bin
+
+  - name: cups-client
+    description: CUPS command-line client programs
+    pipeline:
+      - runs: |
+          mkdir -p ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/cupsaccept ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/cupsctl ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/cupsdisable ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/cupsenable ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/lpadmin ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/lpc ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/lpinfo ${{targets.subpkgdir}}/usr/bin
+          mv ${{targets.destdir}}/usr/sbin/lpmove ${{targets.subpkgdir}}/usr/bin
+
   - name: cups-dev
+    description: cups dev
     pipeline:
       - uses: split/dev
     dependencies:
@@ -86,27 +121,3 @@ subpackages:
         - libgcrypt-dev
         # - gnutls-dev
         - zlib-dev
-    description: cups dev
-  - name: cups-doc
-    pipeline:
-      - uses: split/manpages
-    description: cups manpages
-  # - name: cups-libs
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: cups FIXME
-  # - name: ipptool
-  #   pipeline:
-  #     - runs: FIXME
-  # - name: cups-client
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: cups FIXME
-  # - name: cups-lang
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: cups FIXME
-  # - name: cups-openrc
-  #   pipeline:
-  #     - uses: split/FIXME
-  #   description: cups FIXME

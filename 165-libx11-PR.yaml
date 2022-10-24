@@ -31,8 +31,6 @@ environment:
       - xorgproto
       - util-macros
       - xmlto
-      - libxcb-dev
-      - xtrans
 pipeline:
   - uses: fetch
     with:
@@ -47,10 +45,14 @@ pipeline:
   - uses: autoconf/make-install
   - uses: strip
 subpackages:
-  #  - name: libx11-static
-  #    pipeline:
-  #      - uses: split/FIXME
-  #    description: libx11 FIXME
+  - name: libx11-static
+    description: libx11 static library
+    pipeline:
+      - uses: split/static
+  - name: libx11-doc
+    pipeline:
+      - uses: split/manpages
+    description: libx11 manpages
   - name: libx11-dev
     pipeline:
       - uses: split/dev
@@ -60,7 +62,3 @@ subpackages:
         - libxcb-dev
         - xtrans
     description: libx11 dev
-  - name: libx11-doc
-    pipeline:
-      - uses: split/manpages
-    description: libx11 manpages
