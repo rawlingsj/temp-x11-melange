@@ -42,7 +42,6 @@ environment:
       - zip
       - fontconfig-dev
       - libxi-dev
-      - tree
 
 pipeline:
   # should we just use OpenJDK directly rather than adoptium?
