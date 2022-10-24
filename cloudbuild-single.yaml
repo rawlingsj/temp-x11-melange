@@ -41,7 +41,7 @@ steps:
     entrypoint: sh
     args:
       - ./build-gcb-single.sh
-      - "710"
+      - "6000"
     volumes:
       - name: "secrets"
         path: "/secrets"
@@ -57,5 +57,5 @@ steps:
       - name: "work"
         path: "/work"
 options:
-  machineType: "E2_HIGHCPU_8" # takes ~ 14 mins
-  # machineType: "E2_HIGHCPU_32" # takes ~ 5 mins
+  # machineType: "E2_HIGHCPU_8" # takes ~ 14 mins
+  machineType: "E2_HIGHCPU_32" # takes ~ 5 mins
