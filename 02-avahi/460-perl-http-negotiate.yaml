@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-http-negotiate/APKBUILD
+package:
+    name: perl-http-negotiate
+    version: "6.01"
+    epoch: 0
+    description: HTTP::Negotiate perl module
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-2.0 or Artistic
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-http-message
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 1c729c1ea63100e878405cda7d66f9adfd3ed4f1d6cacaca0ee9152df728e016
+        uri: https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTTP-Negotiate-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-http-negotiate-doc
+      pipeline:
+        - runs: FIXME

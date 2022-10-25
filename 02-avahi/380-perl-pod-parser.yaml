@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-pod-parser/APKBUILD
+package:
+    name: perl-pod-parser
+    version: "1.65"
+    epoch: 0
+    description: Modules for parsing/translating POD format documents
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 3ba7bdec659416a51fe2a7e59f0883e9c6a3b21bc9d001042c1d6a32d401b28a
+        uri: https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-pod-parser-doc
+      pipeline:
+        - runs: FIXME

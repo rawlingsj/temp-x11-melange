@@ -1,0 +1,47 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libeconf/APKBUILD
+package:
+    name: libeconf
+    version: 0.4.6
+    epoch: 0
+    description: Enhanced Config File Parser
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - meson
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 2143c248a2d643392ae39faddba29c1aa9caf406cec7ef1ac5fd6dd7e8b43d65
+        uri: https://github.com/openSUSE/libeconf/archive/refs/tags/v${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libeconf-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libeconf
+      description: libeconf dev
+    - name: libeconf-doc
+      pipeline:
+        - uses: split/manpages
+      description: libeconf manpages

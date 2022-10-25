@@ -1,0 +1,50 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/p11-kit/APKBUILD
+package:
+    name: p11-kit
+    version: 0.24.1
+    epoch: 0
+    description: Library for loading and sharing PKCS#11 modules
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: BSD-3-Clause
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - meson
+            - libtasn1-dev
+            - libffi-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: d8be783efd5cd4ae534cee4132338e3f40f182c3205d23b200094ec85faaaef8
+        uri: https://github.com/p11-glue/p11-kit/releases/download/${{package.version}}/p11-kit-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: p11-kit-dev
+      pipeline:
+        - runs: FIXME
+    - name: p11-kit-doc
+      pipeline:
+        - runs: FIXME
+    - name: p11-kit-trust
+      pipeline:
+        - runs: FIXME
+    - name: p11-kit-server
+      pipeline:
+        - runs: FIXME

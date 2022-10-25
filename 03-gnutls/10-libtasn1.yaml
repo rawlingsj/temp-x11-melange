@@ -1,0 +1,53 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libtasn1/APKBUILD
+package:
+    name: libtasn1
+    version: 4.19.0
+    epoch: 0
+    description: The ASN.1 library used in GNUTLS
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.1-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - texinfo
+            - libtasn1-progs-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 1613f0ac1cf484d6ec0ce3b8c06d56263cc7242f1c23b30d82d23de345a63f7a
+        uri: https://ftp.gnu.org/gnu/libtasn1/libtasn1-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libtasn1-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libtasn1
+            - libtasn1-progs
+      description: libtasn1 dev
+    - name: libtasn1-doc
+      pipeline:
+        - uses: split/manpages
+      description: libtasn1 manpages
+    - name: libtasn1-progs
+      pipeline:
+        - uses: split/FIXME
+      description: libtasn1 FIXME

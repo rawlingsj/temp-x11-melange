@@ -1,0 +1,35 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/asciidoctor/APKBUILD
+package:
+    name: asciidoctor
+    version: 2.0.18
+    epoch: 0
+    description: Converter for AsciiDoc to HTML5, DocBook 5 (or 4.5) and other formats
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - ruby
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: bbd1e1d16deed8db94bf9624b9f4474fac32d9ca7225d377f076c08d9adde387
+        uri: https://rubygems.org/downloads/asciidoctor-${{package.version}}.gem
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install

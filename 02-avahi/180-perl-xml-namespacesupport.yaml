@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-xml-namespacesupport/APKBUILD
+package:
+    name: perl-xml-namespacesupport
+    version: "1.12"
+    epoch: 0
+    description: Generic namespace helpers (ported from SAX2)
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 47e995859f8dd0413aa3f22d350c4a62da652e854267aa0586ae544ae2bae5ef
+        uri: https://cpan.metacpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-xml-namespacesupport-doc
+      pipeline:
+        - runs: FIXME

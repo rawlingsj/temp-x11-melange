@@ -1,0 +1,43 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-try-tiny/APKBUILD
+package:
+    name: perl-try-tiny
+    version: "0.31"
+    epoch: 0
+    description: minimal try/catch with proper preservation of $@
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - grep
+            - perl-sub-name
+            - perl
+            - perl-capture-tiny
+            - perl-pod-coverage
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 3300d31d8a4075b26d8f46ce864a1d913e0e8467ceeba6655d5d2b2e206c11be
+        uri: https://search.cpan.org/CPAN/authors/id/E/ET/ETHER/Try-Tiny-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-try-tiny-doc
+      pipeline:
+        - runs: FIXME

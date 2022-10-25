@@ -1,0 +1,72 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/poppler/APKBUILD
+package:
+    name: poppler
+    version: 22.10.0
+    epoch: 0
+    description: PDF rendering library based on xpdf 3.0
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-2.0-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - cairo-dev
+            - glib-dev
+            - cmake
+            - fontconfig-dev
+            - gobject-introspection-dev
+            - lcms2-dev
+            - libjpeg-turbo-dev
+            - libpng-dev
+            - libxml2-dev
+            - openjpeg-dev
+            - openjpeg-tools
+            - samurai
+            - tiff-dev
+            - zlib-dev
+            - cairo-dev
+            - glib-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 04e40fad924a6de62e63017a6fd4c04696c1f526dedc2ba5ef275cedf646292a
+        uri: https://poppler.freedesktop.org/poppler-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: poppler-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - poppler
+            - cairo-dev
+            - glib-dev
+      description: poppler dev
+    - name: poppler-doc
+      pipeline:
+        - uses: split/manpages
+      description: poppler manpages
+    - name: poppler-glib
+      pipeline:
+        - uses: split/FIXME
+      description: poppler FIXME
+    - name: poppler-utils
+      pipeline:
+        - uses: split/FIXME
+      description: poppler FIXME

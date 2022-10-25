@@ -1,0 +1,41 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/doxygen/APKBUILD
+package:
+    name: doxygen
+    version: 1.9.5
+    epoch: 0
+    description: A documentation system for C++, C, Java, IDL and PHP
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-2.0-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - flex
+            - bison
+            - coreutils
+            - perl
+            - python3
+            - cmake
+            - samurai
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 55b454b35d998229a96f3d5485d57a0a517ce2b78d025efb79d57b5a2e4b2eec
+        uri: https://doxygen.nl/files/doxygen-${{package.version}}.src.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install

@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-test-fatal/APKBUILD
+package:
+    name: perl-test-fatal
+    version: "0.016"
+    epoch: 0
+    description: incredibly simple helpers for testing code with exceptions
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-try-tiny
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 7283d430f2ba2030b8cd979ae3039d3f1b2ec3dde1a11ca6ae09f992a66f788f
+        uri: https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Fatal-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-test-fatal-doc
+      pipeline:
+        - runs: FIXME

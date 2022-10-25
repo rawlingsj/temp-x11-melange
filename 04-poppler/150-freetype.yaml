@@ -1,0 +1,63 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/freetype/APKBUILD
+package:
+    name: freetype
+    version: 2.12.1
+    epoch: 0
+    description: TrueType font rendering library
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: FTL GPL-2.0-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - brotli-dev
+            - bzip2-dev
+            - libpng-dev
+            - libx11-dev
+            - zlib-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 4766f20157cc4cf0cd292f80bf917f92d1c439b243ac3018debf6b9140c41a7f
+        uri: https://download.savannah.gnu.org/releases/freetype/freetype-${{package.version}}.tar.xz
+    - uses: fetch
+      with:
+        expected-sha256: ce729d97f166a919a6a3037c949af01d5d6e1783614024d72683153f0bc5ef05
+        uri: https://download.savannah.gnu.org/releases/freetype/ft2demos-${{package.version}}.tar.xz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: freetype-static
+      pipeline:
+        - uses: split/static
+      description: freetype static
+    - name: freetype-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - freetype
+      description: freetype dev
+    - name: freetype-demos
+      pipeline:
+        - uses: split/FIXME
+      description: freetype FIXME
+    - name: freetype-doc
+      pipeline:
+        - uses: split/manpages
+      description: freetype manpages

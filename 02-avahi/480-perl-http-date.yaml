@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-http-date/APKBUILD
+package:
+    name: perl-http-date
+    version: "6.05"
+    epoch: 0
+    description: Perl module date conversion routines
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 365d6294dfbd37ebc51def8b65b81eb79b3934ecbc95a2ec2d4d827efe6a922b
+        uri: https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Date-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-http-date-doc
+      pipeline:
+        - runs: FIXME

@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-file-listing/APKBUILD
+package:
+    name: perl-file-listing
+    version: "6.15"
+    epoch: 0
+    description: Parse directory listing
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-http-date
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 46c4fb9f9eb9635805e26b7ea55b54455e47302758a10ed2a0b92f392713770c
+        uri: https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/File-Listing-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-file-listing-doc
+      pipeline:
+        - runs: FIXME

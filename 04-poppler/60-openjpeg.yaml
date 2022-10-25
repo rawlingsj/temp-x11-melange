@@ -1,0 +1,54 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/openjpeg/APKBUILD
+package:
+    name: openjpeg
+    version: 2.5.0
+    epoch: 0
+    description: Open-source implementation of JPEG2000 image codec
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: BSD-2-Clause-NetBSD
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - libpng-dev
+            - tiff-dev
+            - lcms2-dev
+            - doxygen
+            - cmake
+            - samurai
+            - openjpeg-tools-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 0333806d6adecc6f7a91243b2b839ff4d2053823634d4f6ed7a59bc87409122a
+        uri: https://github.com/uclouvain/openjpeg/archive/v${{package.version}}/openjpeg-v${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: openjpeg-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - openjpeg
+            - openjpeg-tools
+      description: openjpeg dev
+    - name: openjpeg-tools
+      pipeline:
+        - uses: split/FIXME
+      description: openjpeg FIXME

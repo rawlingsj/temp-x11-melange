@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-test-requiresinternet/APKBUILD
+package:
+    name: perl-test-requiresinternet
+    version: "0.05"
+    epoch: 0
+    description: Easily test network connectivity
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: bba7b32a1cc0d58ce2ec20b200a7347c69631641e8cae8ff4567ad24ef1e833e
+        uri: https://cpan.metacpan.org/authors/id/M/MA/MALLEN/Test-RequiresInternet-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-test-requiresinternet-doc
+      pipeline:
+        - runs: FIXME

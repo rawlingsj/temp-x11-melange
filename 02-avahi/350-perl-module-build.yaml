@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-module-build/APKBUILD
+package:
+    name: perl-module-build
+    version: "0.4231"
+    epoch: 0
+    description: Build and install Perl modules
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 7e0f4c692c1740c1ac84ea14d7ea3d8bc798b2fb26c09877229e04f430b2b717
+        uri: https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-module-build-doc
+      pipeline:
+        - runs: FIXME

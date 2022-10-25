@@ -1,0 +1,44 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/xcb-util/APKBUILD
+package:
+    name: xcb-util
+    version: 0.4.0
+    epoch: 0
+    description: Utility libraries for X C-language Binding
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: MIT
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - libxcb-dev
+            - util-macros
+            - m4
+            - gperf
+            - libxcb-dev
+            - util-macros-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 46e49469cb3b594af1d33176cd7565def2be3fa8be4371d62271fabb5eae50e9
+        uri: https://xcb.freedesktop.org/dist/xcb-util-${{package.version}}.tar.bz2
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: xcb-util-dev
+      pipeline:
+        - runs: FIXME

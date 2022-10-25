@@ -1,0 +1,44 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-http-message/APKBUILD
+package:
+    name: perl-http-message
+    version: "6.43"
+    epoch: 0
+    description: HTTP style message
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-http-date
+            - perl-uri
+            - perl-io-html
+            - perl-encode-locale
+            - perl-lwp-mediatypes
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: f68efc7ed790eabc924b85125f408a3f8ad1d75e6eddd82936b5bb5c5f7245db
+        uri: https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/HTTP-Message-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-http-message-doc
+      pipeline:
+        - runs: FIXME

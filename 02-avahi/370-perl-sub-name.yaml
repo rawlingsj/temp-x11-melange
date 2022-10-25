@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-sub-name/APKBUILD
+package:
+    name: perl-sub-name
+    version: "0.26"
+    epoch: 0
+    description: (re)name a sub
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL PerlArtistic
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - perl-devel-checkbin
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 2d2f2d697d516c89547e7c4307f1e79441641cae2c7395e7319b306d390df105
+        uri: https://cpan.metacpan.org/authors/id/E/ET/ETHER/Sub-Name-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-sub-name-doc
+      pipeline:
+        - runs: FIXME

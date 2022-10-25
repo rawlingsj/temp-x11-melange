@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-capture-tiny/APKBUILD
+package:
+    name: perl-capture-tiny
+    version: "0.48"
+    epoch: 0
+    description: Capture STDOUT and STDERR from Perl, XS or external programs
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: Apache-2.0
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 6c23113e87bad393308c90a207013e505f659274736638d8c79bac9c67cc3e19
+        uri: https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-capture-tiny-doc
+      pipeline:
+        - runs: FIXME

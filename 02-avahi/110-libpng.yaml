@@ -1,0 +1,63 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libpng/APKBUILD
+package:
+    name: libpng
+    version: 1.6.38
+    epoch: 0
+    description: Portable Network Graphics library
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: Libpng
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - zlib-dev
+            - gawk
+            - autoconf
+            - automake
+            - libtool
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
+        uri: https://downloads.sourceforge.net/libpng/libpng-${{package.version}}.tar.gz
+    - uses: fetch
+      with:
+        expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
+        uri: https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-${{package.version}}-apng.patch.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libpng-doc
+      pipeline:
+        - uses: split/manpages
+      description: libpng manpages
+    - name: libpng-static
+      pipeline:
+        - uses: split/static
+      description: libpng static
+    - name: libpng-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libpng
+      description: libpng dev
+    - name: libpng-utils
+      pipeline:
+        - uses: split/FIXME
+      description: libpng FIXME

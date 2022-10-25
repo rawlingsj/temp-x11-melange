@@ -1,0 +1,51 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/opensp/APKBUILD
+package:
+    name: opensp
+    version: 1.5.2
+    epoch: 0
+    description: Implementation of the DSSSL style language
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: custom
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - xmlto
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: SHA512 DOES NOT MATCH SOURCE - VALIDATE MANUALLY
+        uri: https://prdownloads.sourceforge.net/openjade/OpenSP-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: opensp-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - opensp
+      description: opensp dev
+    - name: opensp-doc
+      pipeline:
+        - uses: split/manpages
+      description: opensp manpages
+    - name: opensp-lang
+      pipeline:
+        - uses: split/FIXME
+      description: opensp FIXME

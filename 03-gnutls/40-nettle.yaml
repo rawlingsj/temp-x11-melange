@@ -1,0 +1,54 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/nettle/APKBUILD
+package:
+    name: nettle
+    version: 3.8.1
+    epoch: 0
+    description: A low-level cryptographic library
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.0-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - gmp-dev
+            - m4
+            - gmp-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 364f3e2b77cd7dcde83fd7c45219c834e54b0c75e428b6f894a23d12dd41cbfe
+        uri: https://ftp.gnu.org/gnu/nettle/nettle-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: nettle-static
+      pipeline:
+        - uses: split/static
+      description: nettle static
+    - name: nettle-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - nettle
+            - gmp-dev
+      description: nettle dev
+    - name: nettle-utils
+      pipeline:
+        - uses: split/FIXME
+      description: nettle FIXME

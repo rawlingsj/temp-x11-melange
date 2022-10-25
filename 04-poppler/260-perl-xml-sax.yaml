@@ -1,0 +1,41 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-xml-sax/APKBUILD
+package:
+    name: perl-xml-sax
+    version: "1.02"
+    epoch: 0
+    description: Simple API for XML
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-xml-sax-base
+            - perl-xml-namespacesupport
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 4506c387043aa6a77b455f00f57409f3720aa7e553495ab2535263b4ed1ea12a
+        uri: https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-SAX-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-xml-sax-doc
+      pipeline:
+        - runs: FIXME

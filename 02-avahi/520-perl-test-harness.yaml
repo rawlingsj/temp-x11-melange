@@ -1,0 +1,42 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-test-harness/APKBUILD
+package:
+    name: perl-test-harness
+    version: "3.44"
+    epoch: 0
+    description: Run Perl standard test scripts with statistics
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 7eb591ea6b499ece6745ff3e80e60cee669f0037f9ccbc4e4511425f593e5297
+        uri: https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-test-harness-doc
+      pipeline:
+        - runs: FIXME
+    - name: perl-test-harness-utils
+      pipeline:
+        - runs: FIXME

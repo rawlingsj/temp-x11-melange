@@ -1,0 +1,42 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-http-daemon/APKBUILD
+package:
+    name: perl-http-daemon
+    version: "6.14"
+    epoch: 0
+    description: HTTP::Daemon perl module
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-module-build-tiny
+            - perl
+            - perl-http-date
+            - perl-http-message
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: f0767e7f3cbb80b21313c761f07ad8ed253bce9fa2d0ba806b3fb72d309b2e1d
+        uri: https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Daemon-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-http-daemon-doc
+      pipeline:
+        - runs: FIXME

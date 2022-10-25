@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-www-robotrules/APKBUILD
+package:
+    name: perl-www-robotrules
+    version: "6.02"
+    epoch: 0
+    description: WWW::RobotRules perl module
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-2.0 or Artistic
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-uri
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 46b502e7a288d559429891eeb5d979461dd3ecc6a5c491ead85d165b6e03a51e
+        uri: https://cpan.metacpan.org/authors/id/G/GA/GAAS/WWW-RobotRules-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-www-robotrules-doc
+      pipeline:
+        - runs: FIXME

@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/py3-pygments/APKBUILD
+package:
+    name: py3-pygments
+    version: 2.13.0
+    epoch: 0
+    description: Syntax highlighting package written in Python
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: BSD-2-Clause
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - py3-setuptools
+            - python3
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1
+        uri: https://files.pythonhosted.org/packages/source/P/Pygments/Pygments-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: py3-pygments-doc
+      pipeline:
+        - runs: FIXME

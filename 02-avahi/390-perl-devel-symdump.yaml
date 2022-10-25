@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-devel-symdump/APKBUILD
+package:
+    name: perl-devel-symdump
+    version: "2.18"
+    epoch: 0
+    description: dump symbol names or the symbol table
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 826f81a107f5592a2516766ed43beb47e10cc83edc9ea48090b02a36040776c0
+        uri: https://cpan.metacpan.org/authors/id/A/AN/ANDK/Devel-Symdump-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-devel-symdump-doc
+      pipeline:
+        - runs: FIXME

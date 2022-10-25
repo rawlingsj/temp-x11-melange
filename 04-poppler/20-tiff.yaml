@@ -1,0 +1,71 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/tiff/APKBUILD
+package:
+    name: tiff
+    version: 4.4.0
+    epoch: 0
+    description: Provides support for the Tag Image File Format or TIFF
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: libtiff
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - libtool
+            - autoconf
+            - automake
+            - zlib-dev
+            - libjpeg-turbo-dev
+            - libwebp-dev
+            - xz-dev
+            - zstd-dev
+            - zlib-dev
+            - libjpeg-turbo-dev
+            - libwebp-dev
+            - xz-dev
+            - zstd-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: d118fc97748333ae6c53302ea06584148b72e128e924253d346b802d2a80a567
+        uri: https://gitlab.com/libtiff/libtiff/-/archive/v${{package.version}}/libtiff-v${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: tiff-doc
+      pipeline:
+        - uses: split/manpages
+      description: tiff manpages
+    - name: tiff-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - tiff
+            - zlib-dev
+            - libjpeg-turbo-dev
+            - libwebp-dev
+            - xz-dev
+            - zstd-dev
+      description: tiff dev
+    - name: tiff-tools
+      pipeline:
+        - uses: split/FIXME
+      description: tiff FIXME
+    - name: libtiffxx
+      pipeline:
+        - runs: FIXME

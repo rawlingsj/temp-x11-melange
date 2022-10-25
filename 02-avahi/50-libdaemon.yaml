@@ -1,0 +1,46 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/libdaemon/APKBUILD
+package:
+    name: libdaemon
+    version: "0.14"
+    epoch: 0
+    description: A lightweight C library which eases the writing of UNIX daemons
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.1-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: fd23eb5f6f986dcc7e708307355ba3289abe03cc381fc47a80bca4a50aa6b834
+        uri: https://dev.alpinelinux.org/archive/libdaemon/libdaemon-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: libdaemon-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - libdaemon
+      description: libdaemon dev
+    - name: libdaemon-doc
+      pipeline:
+        - uses: split/manpages
+      description: libdaemon manpages

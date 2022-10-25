@@ -1,0 +1,43 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-html-parser/APKBUILD
+package:
+    name: perl-html-parser
+    version: "3.79"
+    epoch: 0
+    description: HTML parser class
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - perl
+            - perl-html-tagset
+            - perl-http-message
+            - perl-uri
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: b934907d37b58e5b13f9b374a21e177645439ebcb44900cd37329b0c48893cdc
+        uri: https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-html-parser-doc
+      pipeline:
+        - runs: FIXME

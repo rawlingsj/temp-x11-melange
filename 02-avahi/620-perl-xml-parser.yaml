@@ -1,0 +1,41 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-xml-parser/APKBUILD
+package:
+    name: perl-xml-parser
+    version: "2.46"
+    epoch: 0
+    description: A perl module for parsing XML documents
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - expat-dev
+            - perl-libwww
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: d331332491c51cccfb4cb94ffc44f9cd73378e618498d4a37df9e043661c515d
+        uri: https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-xml-parser-doc
+      pipeline:
+        - runs: FIXME

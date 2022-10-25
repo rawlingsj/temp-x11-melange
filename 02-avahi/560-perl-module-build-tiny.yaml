@@ -1,0 +1,43 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-module-build-tiny/APKBUILD
+package:
+    name: perl-module-build-tiny
+    version: "0.039"
+    epoch: 0
+    description: A tiny replacement for Module::Build
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL PerlArtistic
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl-dev
+            - perl-extutils-installpaths
+            - perl-extutils-config
+            - perl-extutils-helpers
+            - perl-test-harness
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 7d580ff6ace0cbe555bf36b86dc8ea232581530cbeaaea09bccb57b55797f11c
+        uri: https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-Tiny-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-module-build-tiny-doc
+      pipeline:
+        - runs: FIXME

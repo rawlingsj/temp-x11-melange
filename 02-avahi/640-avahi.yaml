@@ -1,0 +1,83 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/avahi/APKBUILD
+package:
+    name: avahi
+    version: "0.8"
+    epoch: 0
+    description: multicast/unicast DNS-SD framework
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: LGPL-2.1-or-later
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - gdbm-dev
+            - intltool
+            - gobject-introspection-dev
+            - expat-dev
+            - libdaemon-dev
+            - glib-dev
+            - dbus-dev
+            - libcap-dev
+            - gettext-dev
+            - autoconf
+            - automake
+            - libtool
+            - libevent-dev
+            - gdbm-dev
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 060309d7a333d38d951bc27598c677af1796934dbd98e1024e7ad8de798fedda
+        uri: https://github.com/lathiat/avahi/releases/download/v${{package.version}}/avahi-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: avahi-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - avahi
+            - gdbm-dev
+      description: avahi dev
+    - name: avahi-doc
+      pipeline:
+        - uses: split/manpages
+      description: avahi manpages
+    - name: avahi-tools
+      pipeline:
+        - uses: split/FIXME
+      description: avahi FIXME
+    - name: avahi-glib
+      pipeline:
+        - uses: split/FIXME
+      description: avahi FIXME
+    - name: avahi-libs
+      pipeline:
+        - uses: split/FIXME
+      description: avahi FIXME
+    - name: avahi-compat-howl
+      pipeline:
+        - runs: FIXME
+    - name: avahi-compat-libdns_sd
+      pipeline:
+        - runs: FIXME
+    - name: avahi-lang
+      pipeline:
+        - uses: split/FIXME
+      description: avahi FIXME

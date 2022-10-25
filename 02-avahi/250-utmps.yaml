@@ -1,0 +1,61 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/utmps/APKBUILD
+package:
+    name: utmps
+    version: 0.1.2.0
+    epoch: 0
+    description: A secure utmp/wtmp implementation
+    target-architecture:
+        - all
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: ISC
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - skalibs-dev
+            - s6-ipcserver
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 9025d961b8271a0ecc8eeb5786126b6b799376afa6f2bd25c0f872fd24f1123c
+        uri: https://skarnet.org/software/utmps/utmps-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: utmps-static
+      pipeline:
+        - uses: split/static
+      description: utmps static
+    - name: utmps-libs
+      pipeline:
+        - uses: split/FIXME
+      description: utmps FIXME
+    - name: utmps-dev
+      pipeline:
+        - uses: split/dev
+      dependencies:
+        runtime:
+            - utmps
+            - s6-ipcserver
+      description: utmps dev
+    - name: utmps-doc
+      pipeline:
+        - uses: split/manpages
+      description: utmps manpages
+    - name: utmps-openrc
+      pipeline:
+        - uses: split/FIXME
+      description: utmps FIXME

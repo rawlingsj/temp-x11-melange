@@ -1,0 +1,40 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-net-http/APKBUILD
+package:
+    name: perl-net-http
+    version: "6.22"
+    epoch: 0
+    description: Low-level HTTP connection (client)
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+            - perl-uri
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: 62faf9a5b84235443fe18f780e69cecf057dea3de271d7d8a0ba72724458a1a2
+        uri: https://cpan.metacpan.org/authors/id/O/OA/OALDERS/Net-HTTP-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-net-http-doc
+      pipeline:
+        - runs: FIXME

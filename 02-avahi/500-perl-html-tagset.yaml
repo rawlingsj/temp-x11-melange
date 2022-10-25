@@ -1,0 +1,39 @@
+# Generated from https://git.alpinelinux.org/aports/plain/main/perl-html-tagset/APKBUILD
+package:
+    name: perl-html-tagset
+    version: "3.20"
+    epoch: 0
+    description: data tables useful in parsing HTML
+    target-architecture:
+        - noarch
+    copyright:
+        - paths:
+            - '*'
+          attestation: TODO
+          license: GPL-1.0-or-later OR Artistic-1.0-Perl
+environment:
+    contents:
+        repositories:
+            - https://packages.wolfi.dev/os
+            - /work/packages
+        keyring:
+            - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+        packages:
+            - busybox
+            - ca-certificates-bundle
+            - build-base
+            - automake
+            - autoconf
+            - perl
+pipeline:
+    - uses: fetch
+      with:
+        expected-sha256: adb17dac9e36cd011f5243881c9739417fd102fce760f8de4e9be4c7131108e2
+        uri: https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/HTML-Tagset-${{package.version}}.tar.gz
+    - uses: autoconf/configure
+    - uses: autoconf/make
+    - uses: autoconf/make-install
+subpackages:
+    - name: perl-html-tagset-doc
+      pipeline:
+        - runs: FIXME
